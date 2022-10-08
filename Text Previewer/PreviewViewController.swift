@@ -22,13 +22,14 @@ class PreviewViewController: NSViewController,
     
     
     override var nibName: NSNib.Name? {
+        
         return NSNib.Name("PreviewViewController")
     }
 
     
     override func loadView() {
+        
         super.loadView()
-        // Do any additional setup after loading the view.
     }
 
     
@@ -40,9 +41,6 @@ class PreviewViewController: NSViewController,
         
         // Get an error message ready for use
         var reportError: NSError? = nil
-        
-        // Hide the error message field
-        self.renderTextScrollView.isHidden = false
         
         // Set the base values
         let common: Common = Common.init()
@@ -58,7 +56,7 @@ class PreviewViewController: NSViewController,
                 
                 if let textString = String.init(data: data, encoding: encoding) {
                     // Get the key string first
-                    let textAttString: NSAttributedString = common.getAttributedString(textString)
+                    let textAttString: NSAttributedString = common.getAttributedString((common.isLightMode ? "Light\n" : "Dark\n") + textString)
                     
                     // Knock back the light background to make the scroll bars visible in dark mode
                     // NOTE If !doShowLightBackground,
@@ -66,10 +64,8 @@ class PreviewViewController: NSViewController,
                     //      If doShowLightBackground,
                     //              in light mode, the scrollers show up light-on-light, in dark mode light-on-dark
                     // NOTE Changing the scrollview scroller knob style has no effect
-                    self.renderTextView.backgroundColor = common.doShowLightBackground ?
-                        NSColor.hexToColour(common.backgroundColour) :
-                        NSColor.hexToColour(common.foregroundColour)
-                    self.renderTextScrollView.scrollerKnobStyle = common.doShowLightBackground ? .dark : .light
+                    self.renderTextView.backgroundColor = NSColor.hexToColour(common.paperColour)
+                    self.renderTextScrollView.scrollerKnobStyle = common.isLightMode ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         /*

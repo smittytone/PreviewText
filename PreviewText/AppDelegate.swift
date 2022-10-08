@@ -51,6 +51,9 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var useLightCheckbox: NSButton!
     @IBOutlet weak var foregroundLabel: NSTextField!
     @IBOutlet weak var backgroundLabel: NSTextField!
+    @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
+    
+    @IBOutlet weak var noteLabel: NSTextField!
 
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
@@ -63,10 +66,11 @@ final class AppDelegate: NSObject,
     private  var boolStyle: Int                 = BUFFOON_CONSTANTS.BOOL_STYLE.FULL
     private  var bodyFontSize: CGFloat          = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
     private  var bodyFontName: String           = BUFFOON_CONSTANTS.BODY_FONT_NAME
-    private  var bodyColourHex: String          = BUFFOON_CONSTANTS.BODY_COLOUR_HEX
-    private  var backColourHex: String          = BUFFOON_CONSTANTS.BACK_COLOUR_HEX
+    private  var inkColourHex: String           = BUFFOON_CONSTANTS.INK_COLOUR_HEX
+    private  var paperColourHex: String         = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
     private  var appSuiteName: String           = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
     private  var feedbackPath: String           = MNU_SECRETS.ADDRESS.B
+    private  var lineSpacing: CGFloat           = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     private  var doShowLightBackground: Bool    = false
     private  var isMontereyPlus: Bool           = false
     private  var isLightMode: Bool              = true
@@ -271,11 +275,8 @@ final class AppDelegate: NSObject,
         // Display the 'Preferences' sheet
 
         // Check for the OS mode
-        let appearance: NSAppearance = NSApp.effectiveAppearance
-        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
-            self.isLightMode = (appearName != .aqua)
-            self.useLightCheckbox.isEnabled = self.isLightMode
-        }
+        self.isLightMode = isMacInLightMode()
+        //self.useLightCheckbox.isEnabled = !self.isLightMode
         
         // The suite name is the app group name, set in each the entitlements file of
         // the host app and of each extension
@@ -283,8 +284,9 @@ final class AppDelegate: NSObject,
             self.bodyFontSize = CGFloat(defaults.float(forKey: "com-bps-previewtext-base-font-size"))
             self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewtext-do-use-light")
             self.bodyFontName = defaults.string(forKey: "com-bps-previewtext-base-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            self.bodyColourHex = defaults.string(forKey: "com-bps-previewtext-code-colour-hex") ?? BUFFOON_CONSTANTS.BODY_COLOUR_HEX
-            self.backColourHex = defaults.string(forKey: "com-bps-previewtext-mark-colour-hex") ?? BUFFOON_CONSTANTS.BACK_COLOUR_HEX
+            self.inkColourHex = defaults.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
+            self.paperColourHex = defaults.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+            self.lineSpacing = CGFloat(defaults.float(forKey: "com-bps-previewtext-line-spacing"))
         }
 
         // Get the menu item index from the stored value
@@ -302,12 +304,12 @@ final class AppDelegate: NSObject,
         NSColorPanel.setPickerMode(.RGB)
         if self.isLightMode || self.doShowLightBackground {
             // Light mode, so top = foreground, bottom = background
-            self.firstColourWell.color = NSColor.hexToColour(self.bodyColourHex)
-            self.secondColourWell.color = NSColor.hexToColour(self.backColourHex)
+            self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
         } else {
             // Dark mode, so body = background, back = foreground
-            self.firstColourWell.color = NSColor.hexToColour(self.backColourHex)
-            self.secondColourWell.color = NSColor.hexToColour(self.bodyColourHex)
+            self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
         }
         
         // Set the font name popup
@@ -321,6 +323,20 @@ final class AppDelegate: NSObject,
         // Set the font style
         self.codeStylePopup.isEnabled = false
         selectFontByPostScriptName(self.bodyFontName)
+        
+        // Set the line spacing selector
+        switch(round(self.lineSpacing * 100) / 100.0) {
+            case 1.15:
+                self.lineSpacingPopup.selectItem(at: 1)
+            case 1.5:
+                self.lineSpacingPopup.selectItem(at: 2)
+            case 2.0:
+                self.lineSpacingPopup.selectItem(at: 3)
+            default:
+                self.lineSpacingPopup.selectItem(at: 0)
+        }
+        
+        self.noteLabel.stringValue = self.isLightMode ? "Light" : "Dark"
         
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
@@ -385,40 +401,45 @@ final class AppDelegate: NSObject,
         // Save any changed preferences
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             if self.isLightMode || self.doShowLightBackground {
-                // Light mode, so first = foreground, second = background
+                // Light mode, or render as light mode, so
+                // do dark-on-light, ie. foreground on background
                 
                 // Check for and record a foreground colour change
                 var newColour: String = self.firstColourWell.color.hexString
-                if newColour != self.bodyColourHex {
-                    self.bodyColourHex = newColour
+                if newColour != self.inkColourHex {
+                    self.inkColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-code-colour-hex")
+                                      forKey: "com-bps-previewtext-ink-colour-hex")
+                    
+                    // NOTE 'code colour' == 'body colour'
                 }
                 
                 // Check for and record a background colour change
                 newColour = self.secondColourWell.color.hexString
-                if newColour != self.backColourHex {
-                    self.backColourHex = newColour
+                if newColour != self.paperColourHex {
+                    self.paperColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-mark-colour-hex")
+                                      forKey: "com-bps-previewtext-paper-colour-hex")
+                    
+                    // NOTE 'mark colour' == 'body colour'
                 }
             } else {
                 // Dark mode, so first = background, second = foreground
                 
                 // Check for and record a background colour change
                 var newColour: String = self.secondColourWell.color.hexString
-                if newColour != self.bodyColourHex {
-                    self.bodyColourHex = newColour
+                if newColour != self.inkColourHex {
+                    self.inkColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-code-colour-hex")
+                                      forKey: "com-bps-previewtext-ink-colour-hex")
                 }
                 
                 // Check for and record a foreground colour change
                 newColour = self.firstColourWell.color.hexString
-                if newColour != self.backColourHex {
-                    self.backColourHex = newColour
+                if newColour != self.paperColourHex {
+                    self.paperColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-mark-colour-hex")
+                                      forKey: "com-bps-previewtext-paper-colour-hex")
                 }
             }
             
@@ -445,6 +466,25 @@ final class AppDelegate: NSObject,
                                   forKey: "com-bps-previewtext-base-font-size")
             }
             
+            // Save the selected line spacing
+            let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
+            var lineSpacing: CGFloat = 1.0
+            switch(lineIndex) {
+                case 1:
+                    lineSpacing = 1.15
+                case 2:
+                    lineSpacing = 1.5
+                case 3:
+                    lineSpacing = 2.0
+                default:
+                    lineSpacing = 1.0
+            }
+            
+            if (self.lineSpacing != lineSpacing) {
+                self.lineSpacing = lineSpacing
+                defaults.setValue(lineSpacing, forKey: "com-bps-previewtext-line-spacing")
+            }
+            
             // Sync any changes
             defaults.synchronize()
         }
@@ -464,6 +504,20 @@ final class AppDelegate: NSObject,
         if self.secondColourWell.isActive {
             NSColorPanel.shared.close()
             self.secondColourWell.deactivate()
+        }
+    }
+    
+    
+    @IBAction @objc func doSwitchColours(_ sender: Any) {
+        
+        if self.useLightCheckbox.state == .on {
+            // Light mode, so top = foreground, bottom = background
+            self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
+        } else {
+            // Dark mode, so body = background, back = foreground
+            self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
         }
     }
 
@@ -557,6 +611,10 @@ final class AppDelegate: NSObject,
 
         // Check if each preference value exists -- set if it doesn't
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
+            
+            //defaults.removeObject(forKey: "com-bps-previewtext-ink-colour-hex")
+            //defaults.removeObject(forKey: "com-bps-previewtext-paper-colour-hex")
+            
             // Preview body font size, stored as a CGFloat
             // Default: 16.0
             let bodyFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewtext-base-font-size")
@@ -575,18 +633,18 @@ final class AppDelegate: NSObject,
             
             // Colour of JSON keys in the preview, stored as in integer array index
             // Default: #CA0D0E
-            let codeColourDefault: Any? = defaults.object(forKey: "com-bps-previewtext-code-colour-hex")
-            if codeColourDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BODY_COLOUR_HEX,
-                                  forKey: "com-bps-previewtext-code-colour-hex")
+            var colourDefault: Any? = defaults.object(forKey: "com-bps-previewtext-ink-colour-hex")
+            if colourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.INK_COLOUR_HEX,
+                                  forKey: "com-bps-previewtext-ink-colour-hex")
             }
             
             // Colour of JSON markers in the preview, stored as in integer array index
             // Default: #0096FF
-            let markColourDefault: Any? = defaults.object(forKey: "com-bps-previewtext-mark-colour-hex")
-            if markColourDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.BACK_COLOUR_HEX,
-                                  forKey: "com-bps-previewtext-mark-colour-hex")
+            colourDefault = defaults.object(forKey: "com-bps-previewtext-paper-colour-hex")
+            if colourDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.PAPER_COLOUR_HEX,
+                                  forKey: "com-bps-previewtext-paper-colour-hex")
             }
             
             // Use light background even in dark mode, stored as a bool
@@ -607,6 +665,13 @@ final class AppDelegate: NSObject,
             let showNewDefault: Any? = defaults.object(forKey: key)
             if showNewDefault == nil {
                 defaults.setValue(true, forKey: key)
+            }
+            
+            // Store the preview line spacing value
+            let lineSpacingDefault: Any? = defaults.object(forKey: "com-bps-previewtext-line-spacing")
+            if lineSpacingDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
+                                  forKey: "com-bps-previewtext-line-spacing")
             }
             
             // Sync any additions
@@ -702,20 +767,39 @@ final class AppDelegate: NSObject,
                 // NOTE Appearance it this point seems to reflect the mode
                 //      we're coming FROM, not what it has changed to
                 self.isLightMode = (appearName != .aqua)
-                self.useLightCheckbox.isEnabled = !self.isLightMode
+                //self.useLightCheckbox.isEnabled = !self.isLightMode
                 
-                // TODO -- Swap colorwell values around
+                // Swap colorwell values around
                 if self.isLightMode || self.doShowLightBackground || self.useLightCheckbox.isHighlighted {
                     // Light mode, so top = foreground, bottom = background
-                    self.firstColourWell.color = NSColor.hexToColour(self.bodyColourHex)
-                    self.secondColourWell.color = NSColor.hexToColour(self.backColourHex)
+                    self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
+                    self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
                 } else {
                     // Dark mode, so body = background, back = foreground
-                    self.firstColourWell.color = NSColor.hexToColour(self.backColourHex)
-                    self.secondColourWell.color = NSColor.hexToColour(self.bodyColourHex)
+                    self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
+                    self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
                 }
+                
+                self.noteLabel.stringValue = self.isLightMode ? "Light" : "Dark"
             }
         }
+    }
+    
+    
+    /**
+     Determine whether the host Mac is in light mode.
+     
+     - Returns: `true` if the Mac is in light mode, otherwise `false`.
+     */
+    private func isMacInLightMode() -> Bool {
+        
+        let appearance: NSAppearance = NSApp.effectiveAppearance
+        
+        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
+            return (appearName == .aqua)
+        }
+        
+        return true
     }
 
 }

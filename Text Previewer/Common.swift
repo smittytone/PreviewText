@@ -16,15 +16,19 @@ final class Common: NSObject {
     
     // MARK: - Public Properties
     
-    var doShowLightBackground: Bool = false
-    var backgroundColour: String    = BUFFOON_CONSTANTS.BACK_COLOUR_HEX
-    var foregroundColour: String    = BUFFOON_CONSTANTS.BODY_COLOUR_HEX
-    var isLightMode:Bool            = true
+    var isLightMode: Bool               = true
+    var inkColour: String               = BUFFOON_CONSTANTS.INK_COLOUR_HEX
+    var paperColour: String             = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+    
     
     // MARK: - Private Properties
     
-    private var isThumbnail:Bool    = false
-    private var fontSize: CGFloat   = 0
+    private var isThumbnail: Bool       = false
+    private var fontSize: CGFloat       = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
+    private var alwaysLightMode: Bool   = false
+    private var baseInkColour: String   = BUFFOON_CONSTANTS.INK_COLOUR_HEX
+    private var basePaperColour: String = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+    private var lineSpacing: CGFloat    = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     
     // String artifacts...
     private var textAtts: [NSAttributedString.Key: Any] = [:]
@@ -38,60 +42,82 @@ final class Common: NSObject {
         
         super.init()
         
-        let appearance: NSAppearance = NSApp.effectiveAppearance
-        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
-            self.isLightMode = (appearName != .aqua)
-        }
+        // Watch for macOS UI mode changes
+        DistributedNotificationCenter.default.addObserver(self,
+                                                          selector: #selector(interfaceModeChanged),
+                                                          name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
+                                                          object: nil)
         
-        var fontBaseSize: CGFloat = CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
-        var fontBaseName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
-        
+        // Set up instance properties
         self.isThumbnail = isThumbnail
+        setProperties()
+    }
+    
+    
+    func setProperties() {
+        
+        var fontBaseName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
         
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
-            self.doShowLightBackground  = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
+            // First check the Mac's mode
+            self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
+            self.isLightMode = isMacInLightMode() || self.alwaysLightMode || isThumbnail
             
-            fontBaseSize = CGFloat(isThumbnail
-                                   ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE
-                                   : prefs.float(forKey: "com-bps-previewtext-base-font-size"))
-            fontBaseName = prefs.string(forKey: "com-bps-previewtext-base-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            self.foregroundColour = prefs.string(forKey: "com-bps-previewtext-code-colour-hex") ?? BUFFOON_CONSTANTS.BODY_COLOUR_HEX
-            self.backgroundColour = prefs.string(forKey: "com-bps-previewtext-mark-colour-hex") ?? BUFFOON_CONSTANTS.BACK_COLOUR_HEX
+            // Set current ink and paper colours
+            self.baseInkColour = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ??
+                BUFFOON_CONSTANTS.INK_COLOUR_HEX
+            self.basePaperColour = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+            
+            if isLightMode {
+                self.inkColour = self.baseInkColour
+                self.paperColour = self.basePaperColour
+            } else {
+                self.inkColour = self.basePaperColour
+                self.paperColour = self.baseInkColour
+            }
+            
+            // Get font sizes
+            self.fontSize = isThumbnail
+                            ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE
+                            : CGFloat(prefs.float(forKey: "com-bps-previewtext-base-font-size"))
+            fontBaseName = prefs.string(forKey: "com-bps-previewtext-base-font-name") ??
+                BUFFOON_CONSTANTS.BODY_FONT_NAME
+            
+            // Set line spacing
+            self.lineSpacing = CGFloat(prefs.float(forKey: "com-bps-previewtext-line-spacing"))
         }
         
         // Just in case the above block reads in zero values
         // NOTE The other values CAN be zero
-        if fontBaseSize < CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0]) ||
-            fontBaseSize > CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1]) {
-            fontBaseSize = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+        if self.fontSize < CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0]) ||
+            self.fontSize > CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1]) {
+            self.fontSize = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
         }
         
-        // Set the YAML key:value fonts and sizes
+        // Create the font we'll use
         var font: NSFont
-        if let chosenFont: NSFont = NSFont.init(name: fontBaseName, size: fontBaseSize) {
+        if let chosenFont: NSFont = NSFont.init(name: fontBaseName, size: self.fontSize) {
             font = chosenFont
         } else {
-            font = NSFont.systemFont(ofSize: fontBaseSize)
+            font = NSFont.systemFont(ofSize: self.fontSize)
         }
         
-        self.fontSize = fontBaseSize
-        
         // Set up the attributed string components we may use during rendering
-        let markParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-        markParaStyle.paragraphSpacing = fontBaseSize * 0.85
+        let textParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
+        textParaStyle.paragraphSpacing = self.lineSpacing * self.fontSize * 0.85
+        textParaStyle.lineSpacing = (self.lineSpacing - 1) * self.fontSize
         
         self.textAtts = [
-            .foregroundColor: (isThumbnail || self.doShowLightBackground || self.isLightMode ?
-                               NSColor.hexToColour(self.foregroundColour) :
-                               NSColor.hexToColour(self.backgroundColour)),
+            .foregroundColor: NSColor.hexToColour(self.inkColour),
             .font: font,
-            .paragraphStyle: markParaStyle
+            .paragraphStyle: textParaStyle
         ]
         
         self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
-                                                  .strikethroughColor: (isThumbnail || self.doShowLightBackground ? NSColor.black : NSColor.white)])
+                                                  .strikethroughColor: NSColor.hexToColour(self.inkColour)]
+        )
         
         self.newLine = NSAttributedString.init(string: "\n",
                                                attributes: textAtts)
@@ -116,6 +142,35 @@ final class Common: NSObject {
         return renderedString as NSAttributedString
     }
     
+    
+    /**
+     Determine whether the host Mac is in light mode.
+     
+     - Returns: `true` if the Mac is in light mode, otherwise `false`.
+     */
+    private func isMacInLightMode() -> Bool {
+        
+        let appearance: NSAppearance = NSApp.effectiveAppearance
+        
+        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
+            return (appearName == .aqua)
+        }
+        
+        return true
+    }
+    
+    
+    /**
+     Handler for macOS UI mode change notifications
+     */
+    @objc private func interfaceModeChanged() {
+        
+        // Do nothing if we're thumbnailing...
+        if self.isThumbnail { return }
+        
+        // ...otherwise reeset the properties
+        setProperties()
+    }
 }
 
 
