@@ -12,7 +12,9 @@
 			<array>
 				<string>public.data</string>
 				<string>public.content</string>
+				<string>public.document</string>
 				<string>public.plain-text</string>
+				<string>com.apple.log</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>
