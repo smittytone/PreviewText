@@ -276,7 +276,6 @@ final class AppDelegate: NSObject,
 
         // Check for the OS mode
         self.isLightMode = isMacInLightMode()
-        //self.useLightCheckbox.isEnabled = !self.isLightMode
         
         // The suite name is the app group name, set in each the entitlements file of
         // the host app and of each extension
@@ -335,8 +334,6 @@ final class AppDelegate: NSObject,
             default:
                 self.lineSpacingPopup.selectItem(at: 0)
         }
-        
-        self.noteLabel.stringValue = self.isLightMode ? "Light" : "Dark"
         
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
