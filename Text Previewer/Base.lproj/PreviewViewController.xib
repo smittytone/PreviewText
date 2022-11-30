@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21225" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21225"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="JSON_Previewer" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="Text_Previewer" customModuleProvider="target">
             <connections>
                 <outlet property="renderTextScrollView" destination="W9l-6S-rRP" id="hNd-aj-qCO"/>
                 <outlet property="renderTextView" destination="Qsk-rg-dDO" id="gs3-Pg-zW2"/>
@@ -25,7 +25,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" spellingCorrection="YES" smartInsertDelete="YES" id="Qsk-rg-dDO">
+                            <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="Qsk-rg-dDO">
                                 <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -47,10 +47,10 @@
                 </scrollView>
             </subviews>
             <constraints>
-                <constraint firstItem="W9l-6S-rRP" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="A2B-UV-GYV"/>
-                <constraint firstAttribute="trailing" secondItem="W9l-6S-rRP" secondAttribute="trailing" id="Dyc-Uf-s5p"/>
-                <constraint firstAttribute="bottom" secondItem="W9l-6S-rRP" secondAttribute="bottom" id="KEf-gF-oXL"/>
-                <constraint firstItem="W9l-6S-rRP" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="nbB-oW-K9t"/>
+                <constraint firstAttribute="trailing" secondItem="W9l-6S-rRP" secondAttribute="trailing" id="0nf-OG-uFE"/>
+                <constraint firstItem="W9l-6S-rRP" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="U0m-Te-sdQ"/>
+                <constraint firstItem="W9l-6S-rRP" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="dZf-mD-9PM"/>
+                <constraint firstAttribute="bottom" secondItem="W9l-6S-rRP" secondAttribute="bottom" id="do2-Cb-EAZ"/>
             </constraints>
             <point key="canvasLocation" x="196" y="197"/>
         </customView>

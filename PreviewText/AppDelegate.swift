@@ -790,13 +790,9 @@ final class AppDelegate: NSObject,
      */
     private func isMacInLightMode() -> Bool {
         
-        let appearance: NSAppearance = NSApp.effectiveAppearance
-        
-        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
-            return (appearName == .aqua)
-        }
-        
-        return true
+        let appearName: String = NSApp.effectiveAppearance.name.rawValue
+        print("Appearance: \(appearName == "NSAppearanceNameAqua" ? "Light" : "Dark")")
+        return (appearName == "NSAppearanceNameAqua")
     }
 
 }

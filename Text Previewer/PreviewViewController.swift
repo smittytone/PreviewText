@@ -56,7 +56,7 @@ class PreviewViewController: NSViewController,
                 
                 if let textString = String.init(data: data, encoding: encoding) {
                     // Get the key string first
-                    let textAttString: NSAttributedString = common.getAttributedString((common.isLightMode ? "Light\n" : "Dark\n") + textString)
+                    let textAttString: NSAttributedString = common.getAttributedString(textString)
                     
                     // Knock back the light background to make the scroll bars visible in dark mode
                     // NOTE If !doShowLightBackground,
@@ -65,7 +65,7 @@ class PreviewViewController: NSViewController,
                     //              in light mode, the scrollers show up light-on-light, in dark mode light-on-dark
                     // NOTE Changing the scrollview scroller knob style has no effect
                     self.renderTextView.backgroundColor = NSColor.hexToColour(common.paperColour)
-                    self.renderTextScrollView.scrollerKnobStyle = common.isLightMode ? .dark : .light
+                    self.renderTextScrollView.scrollerKnobStyle = .light //common.isLightMode ? .dark : .light
 
                     if let renderTextStorage: NSTextStorage = self.renderTextView.textStorage {
                         /*

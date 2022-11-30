@@ -13,6 +13,7 @@
 				<string>public.document</string>
 				<string>public.plain-text</string>
 				<string>com.apple.log</string>
+				<string>com.bps.srt</string>
 			</array>
 			<key>QLThumbnailMinimumDimension</key>
 			<integer>0</integer>

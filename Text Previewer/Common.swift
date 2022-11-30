@@ -62,11 +62,10 @@ final class Common: NSObject {
         if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
             // First check the Mac's mode
             self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
-            self.isLightMode = isMacInLightMode() || self.alwaysLightMode || isThumbnail
+            self.isLightMode = (isThumbnail || self.alwaysLightMode || isMacInLightMode())
             
             // Set current ink and paper colours
-            self.baseInkColour = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ??
-                BUFFOON_CONSTANTS.INK_COLOUR_HEX
+            self.baseInkColour = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
             self.basePaperColour = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
             
             if isLightMode {
@@ -105,7 +104,7 @@ final class Common: NSObject {
         
         // Set up the attributed string components we may use during rendering
         let textParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-        textParaStyle.paragraphSpacing = self.lineSpacing * self.fontSize * 0.85
+        textParaStyle.paragraphSpacing = self.lineSpacing * self.fontSize * 0.5
         textParaStyle.lineSpacing = (self.lineSpacing - 1) * self.fontSize
         
         self.textAtts = [
@@ -150,13 +149,8 @@ final class Common: NSObject {
      */
     private func isMacInLightMode() -> Bool {
         
-        let appearance: NSAppearance = NSApp.effectiveAppearance
-        
-        if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
-            return (appearName == .aqua)
-        }
-        
-        return true
+        let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
+        return (appearNameString == "NSAppearanceNameAqua")
     }
     
     
@@ -166,10 +160,10 @@ final class Common: NSObject {
     @objc private func interfaceModeChanged() {
         
         // Do nothing if we're thumbnailing...
-        if self.isThumbnail { return }
-        
-        // ...otherwise reeset the properties
-        setProperties()
+        if !self.isThumbnail {
+            // ...otherwise reset the properties
+            setProperties()
+        }
     }
 }
 
