@@ -9,6 +9,7 @@
 
 
 import Foundation
+import Cocoa
 import AppKit
 
 
@@ -35,6 +36,7 @@ final class Common: NSObject {
     private var hr: NSAttributedString                  = NSAttributedString.init(string: "")
     private var newLine: NSAttributedString             = NSAttributedString.init(string: "")
     
+    var mainView: NSView? = nil
     
     // MARK:- Lifecycle Functions
     
@@ -43,10 +45,12 @@ final class Common: NSObject {
         super.init()
         
         // Watch for macOS UI mode changes
+        /*
         DistributedNotificationCenter.default.addObserver(self,
                                                           selector: #selector(interfaceModeChanged),
                                                           name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
                                                           object: nil)
+        */
         
         // Set up instance properties
         self.isThumbnail = isThumbnail
@@ -185,3 +189,4 @@ extension Data {
         return .init(rawValue: rawValue)
     }
 }
+

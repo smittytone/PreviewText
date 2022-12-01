@@ -375,6 +375,7 @@ DQ
                 <autoresizingMask key="autoresizingMask"/>
                 <userGuides>
                     <userLayoutGuide location="280" affinity="minX"/>
+                    <userLayoutGuide location="192" affinity="minY"/>
                 </userGuides>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6NP-d0-Kh9">
@@ -570,9 +571,9 @@ DQ
                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </colorWell>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PDl-a0-SSP">
-                        <rect key="frame" x="338" y="167" width="204" height="48"/>
+                        <rect key="frame" x="338" y="164" width="204" height="48"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" title="These colours will automatically invert when you change from Light to Dark Mode and vice versa." id="Or0-sw-Hnx">
+                        <textFieldCell key="cell" controlSize="small" title="These colours will automatically invert if you change from Light  to Dark Mode and vice versa." id="Or0-sw-Hnx">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -608,7 +609,7 @@ DQ
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BoQ-JX-H8c">
                         <rect key="frame" x="98" y="92" width="364" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="8o2-5l-ksb">
+                        <buttonCell key="cell" type="check" title="Use light background for previews in macOS Dark Mode" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="8o2-5l-ksb">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>

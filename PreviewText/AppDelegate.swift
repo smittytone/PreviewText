@@ -298,6 +298,7 @@ final class AppDelegate: NSObject,
         
         // Set the checkboxes
         self.useLightCheckbox.state = self.doShowLightBackground ? .on : .off
+        self.useLightCheckbox.isEnabled = !self.isLightMode
         
         // Set the colour panel's initial view
         NSColorPanel.setPickerMode(.RGB)
@@ -754,30 +755,27 @@ final class AppDelegate: NSObject,
      */
     @objc private func interfaceModeChanged() {
         
+        self.isLightMode = !isMacInLightMode()
+        
         if self.preferencesWindow.isVisible {
             // Prefs window is up, so switch the use light background checkbox
             // on or off according to whether the current mode is light
-            // NOTE For light mode, this checkbox is irrelevant, so the
-            //      checkbox should be disabled
-            let appearance: NSAppearance = NSApp.effectiveAppearance
-            if let appearName: NSAppearance.Name = appearance.bestMatch(from: [.aqua, .darkAqua]) {
-                // NOTE Appearance it this point seems to reflect the mode
-                //      we're coming FROM, not what it has changed to
-                self.isLightMode = (appearName != .aqua)
-                //self.useLightCheckbox.isEnabled = !self.isLightMode
-                
-                // Swap colorwell values around
-                if self.isLightMode || self.doShowLightBackground || self.useLightCheckbox.isHighlighted {
-                    // Light mode, so top = foreground, bottom = background
-                    self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
-                    self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
-                } else {
-                    // Dark mode, so body = background, back = foreground
-                    self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
-                    self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
-                }
-                
-                self.noteLabel.stringValue = self.isLightMode ? "Light" : "Dark"
+            // NOTE 1 For light mode, this checkbox is irrelevant, so the
+            //        checkbox should be disabled
+            // NOTE 2 Appearance it this point seems to reflect the mode
+            //        we're coming FROM, not what it has changed TO
+            self.useLightCheckbox.isEnabled = !self.isLightMode
+            
+            // Swap colorwell values around
+            if self.isLightMode || self.useLightCheckbox.state == .on {
+                // Light mode; dark mode but user wants light previews
+                // so top = foreground, bottom = background
+                self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
+                self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            } else {
+                // Dark mode, so body = background, back = foreground
+                self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
+                self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
             }
         }
     }
@@ -790,9 +788,8 @@ final class AppDelegate: NSObject,
      */
     private func isMacInLightMode() -> Bool {
         
-        let appearName: String = NSApp.effectiveAppearance.name.rawValue
-        print("Appearance: \(appearName == "NSAppearanceNameAqua" ? "Light" : "Dark")")
-        return (appearName == "NSAppearanceNameAqua")
+        let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
+        return (appearNameString == "NSAppearanceNameAqua")
     }
 
 }

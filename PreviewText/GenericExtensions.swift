@@ -244,3 +244,12 @@ extension AppDelegate {
         }
     }
 }
+
+
+extension NSApplication {
+    
+    func isMacInLightMode() -> Bool {
+        
+        return (self.effectiveAppearance.name.rawValue == "NSAppearanceNameAqua")
+    }
+}
