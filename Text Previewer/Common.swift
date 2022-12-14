@@ -27,8 +27,6 @@ final class Common: NSObject {
     private var isThumbnail: Bool       = false
     private var fontSize: CGFloat       = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
     private var alwaysLightMode: Bool   = false
-    private var baseInkColour: String   = BUFFOON_CONSTANTS.INK_COLOUR_HEX
-    private var basePaperColour: String = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
     private var lineSpacing: CGFloat    = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     
     // String artifacts...
@@ -66,18 +64,22 @@ final class Common: NSObject {
         if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
             // First check the Mac's mode
             self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
+            
+            // This should be true if we're rendering a thumbnail, the user wants
+            // a dark-on-light preview even in Dark Mode, or the Mac is in Light Mode
             self.isLightMode = (isThumbnail || self.alwaysLightMode || isMacInLightMode())
             
             // Set current ink and paper colours
-            self.baseInkColour = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
-            self.basePaperColour = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+            let baseInkColour: String = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
+            let basePaperColour: String = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
             
+            // Set the used colours according to the mode
             if isLightMode {
-                self.inkColour = self.baseInkColour
-                self.paperColour = self.basePaperColour
+                self.inkColour = baseInkColour
+                self.paperColour = basePaperColour
             } else {
-                self.inkColour = self.basePaperColour
-                self.paperColour = self.baseInkColour
+                self.inkColour = basePaperColour
+                self.paperColour = baseInkColour
             }
             
             // Get font sizes

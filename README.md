@@ -1,6 +1,6 @@
-# PreviewJson 1.0.1
+# PreviewText 1.0.0
 
-QuickLook JSON preview and icon thumbnailing app extensions for macOS Catalina and beyond
+QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
 ![PreviewJson App Store QR code](qr-code.jpg)
 
@@ -30,9 +30,7 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 ## Release Notes ##
 
-* 1.0.1 *4 October 2022*
-    * Correct some text style discrepancies.
-* 1.0.0 *2 October 2022*
+* 1.0.0 *Unreleased*
     * Initial public release.
 
 ## Copyright and Credits ##

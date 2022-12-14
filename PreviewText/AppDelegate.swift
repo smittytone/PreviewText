@@ -46,13 +46,12 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var fontSizeLabel: NSTextField!
     @IBOutlet weak var codeFontPopup: NSPopUpButton!
     @IBOutlet weak var codeStylePopup: NSPopUpButton!
-    @IBOutlet weak var firstColourWell: NSColorWell!
-    @IBOutlet weak var secondColourWell: NSColorWell!
+    @IBOutlet weak var inkColourWell: NSColorWell!
+    @IBOutlet weak var paperColourWell: NSColorWell!
     @IBOutlet weak var useLightCheckbox: NSButton!
     @IBOutlet weak var foregroundLabel: NSTextField!
     @IBOutlet weak var backgroundLabel: NSTextField!
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
-    
     @IBOutlet weak var noteLabel: NSTextField!
 
     // What's New Sheet
@@ -303,14 +302,17 @@ final class AppDelegate: NSObject,
         // Set the colour panel's initial view
         NSColorPanel.setPickerMode(.RGB)
         if self.isLightMode || self.doShowLightBackground {
-            // Light mode, so top = foreground, bottom = background
-            self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
-            self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            // Light mode, so ink = foreground, paper = background
+            self.inkColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            self.paperColourWell.color = NSColor.hexToColour(self.paperColourHex)
         } else {
-            // Dark mode, so body = background, back = foreground
-            self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
-            self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            // Dark mode, so ink = background, paper = foreground
+            self.inkColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            self.paperColourWell.color = NSColor.hexToColour(self.inkColourHex)
         }
+        
+        // Set the colour shift warning's state
+        self.noteLabel.alphaValue = !self.isLightMode && self.doShowLightBackground ? 0.25 : 1.0
         
         // Set the font name popup
         // List the current system's monospace fonts
@@ -398,54 +400,47 @@ final class AppDelegate: NSObject,
         
         // Save any changed preferences
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            if self.isLightMode || self.doShowLightBackground {
-                // Light mode, or render as light mode, so
-                // do dark-on-light, ie. foreground on background
-                
-                // Check for and record a foreground colour change
-                var newColour: String = self.firstColourWell.color.hexString
-                if newColour != self.inkColourHex {
-                    self.inkColourHex = newColour
-                    defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-ink-colour-hex")
-                    
-                    // NOTE 'code colour' == 'body colour'
-                }
-                
-                // Check for and record a background colour change
-                newColour = self.secondColourWell.color.hexString
-                if newColour != self.paperColourHex {
-                    self.paperColourHex = newColour
-                    defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-paper-colour-hex")
-                    
-                    // NOTE 'mark colour' == 'body colour'
-                }
-            } else {
-                // Dark mode, so first = background, second = foreground
-                
-                // Check for and record a background colour change
-                var newColour: String = self.secondColourWell.color.hexString
-                if newColour != self.inkColourHex {
-                    self.inkColourHex = newColour
-                    defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-ink-colour-hex")
-                }
-                
-                // Check for and record a foreground colour change
-                newColour = self.firstColourWell.color.hexString
-                if newColour != self.paperColourHex {
-                    self.paperColourHex = newColour
-                    defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-paper-colour-hex")
-                }
-            }
             
             // Check for and record a use light background change
             let state: Bool = self.useLightCheckbox.state == .on
             if self.doShowLightBackground != state {
                 defaults.setValue(state,
                                   forKey: "com-bps-previewtext-do-use-light")
+            }
+            
+            if self.isLightMode || (!self.isLightMode && state) {
+                // In Light Mode, or in Dark Mode and the user wants a light preview
+                
+                // Check for and record an ink colour change
+                var newColour: String = self.inkColourWell.color.hexString
+                if newColour != self.inkColourHex {
+                    self.inkColourHex = newColour
+                    defaults.setValue(newColour,
+                                      forKey: "com-bps-previewtext-ink-colour-hex")
+                }
+                
+                // Check for and record a paper colour change
+                newColour = self.paperColourWell.color.hexString
+                if newColour != self.paperColourHex {
+                    self.paperColourHex = newColour
+                    defaults.setValue(newColour,
+                                      forKey: "com-bps-previewtext-paper-colour-hex")
+                }
+            } else {
+                // In Dark Mode, and the user wants a dark preview
+                var newColour: String = self.inkColourWell.color.hexString
+                if newColour != self.paperColourHex {
+                    self.paperColourHex = newColour
+                    defaults.setValue(newColour,
+                                      forKey: "com-bps-previewtext-paper-colour-hex")
+                }
+                
+                newColour = self.paperColourWell.color.hexString
+                if newColour != self.inkColourHex {
+                    self.inkColourHex = newColour
+                    defaults.setValue(newColour,
+                                      forKey: "com-bps-previewtext-ink-colour-hex")
+                }
             }
             
             // Check for and record a font and style change
@@ -491,32 +486,45 @@ final class AppDelegate: NSObject,
         self.window.endSheet(self.preferencesWindow)
     }
     
-    
+
+    /**
+        Close all the colour wells that are open.
+     */
     private func doCloseColourWells() {
         
-        if self.firstColourWell.isActive {
+        if self.inkColourWell.isActive {
             NSColorPanel.shared.close()
-            self.firstColourWell.deactivate()
+            self.inkColourWell.deactivate()
         }
 
-        if self.secondColourWell.isActive {
+        if self.paperColourWell.isActive {
             NSColorPanel.shared.close()
-            self.secondColourWell.deactivate()
+            self.paperColourWell.deactivate()
         }
     }
     
-    
+
+    /**
+        Respond to a click on the **use light background** checkbox.
+
+        Update the colour well values accordingly.
+
+        - Parameters:
+            - sender: The source of the action.
+     */
     @IBAction @objc func doSwitchColours(_ sender: Any) {
         
         if self.useLightCheckbox.state == .on {
-            // Light mode, so top = foreground, bottom = background
-            self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
-            self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            // Light mode, so ink = foreground, paper = background
+            self.inkColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            self.paperColourWell.color = NSColor.hexToColour(self.paperColourHex)
         } else {
-            // Dark mode, so body = background, back = foreground
-            self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
-            self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            // Dark mode, so ink = background, paper = foreground
+            self.inkColourWell.color = NSColor.hexToColour(self.paperColourHex)
+            self.paperColourWell.color = NSColor.hexToColour(self.inkColourHex)
         }
+        
+        self.noteLabel.alphaValue = (!self.isLightMode && self.useLightCheckbox.state == .on) ? 0.25 : 1.0
     }
 
 
@@ -770,12 +778,12 @@ final class AppDelegate: NSObject,
             if self.isLightMode || self.useLightCheckbox.state == .on {
                 // Light mode; dark mode but user wants light previews
                 // so top = foreground, bottom = background
-                self.firstColourWell.color = NSColor.hexToColour(self.inkColourHex)
-                self.secondColourWell.color = NSColor.hexToColour(self.paperColourHex)
+                self.inkColourWell.color = NSColor.hexToColour(self.inkColourHex)
+                self.paperColourWell.color = NSColor.hexToColour(self.paperColourHex)
             } else {
                 // Dark mode, so body = background, back = foreground
-                self.firstColourWell.color = NSColor.hexToColour(self.paperColourHex)
-                self.secondColourWell.color = NSColor.hexToColour(self.inkColourHex)
+                self.inkColourWell.color = NSColor.hexToColour(self.paperColourHex)
+                self.paperColourWell.color = NSColor.hexToColour(self.inkColourHex)
             }
         }
     }

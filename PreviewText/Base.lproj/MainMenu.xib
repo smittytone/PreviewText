@@ -21,7 +21,6 @@
                 <outlet property="codeStylePopup" destination="2qh-h7-OMO" id="u4j-br-Bdg"/>
                 <outlet property="connectionProgress" destination="tAy-4n-Mlm" id="JrN-W5-JML"/>
                 <outlet property="feedbackText" destination="rME-5J-5yH" id="yEn-3B-e4A"/>
-                <outlet property="firstColourWell" destination="c2F-Ul-2wK" id="Zub-hc-oIS"/>
                 <outlet property="fontSizeLabel" destination="2HA-Yj-cyf" id="psJ-3Z-WQI"/>
                 <outlet property="fontSizeSlider" destination="OfZ-N6-qKG" id="oDv-Or-Fni"/>
                 <outlet property="foregroundLabel" destination="YAR-RZ-VG6" id="3XX-C6-ARk"/>
@@ -32,10 +31,12 @@
                 <outlet property="helpMenuOtherspreviewJson" destination="cvH-uO-rsZ" id="7NX-L9-FGf"/>
                 <outlet property="helpMenuOtherspreviewYaml" destination="QaP-Sh-GBM" id="dG4-9f-SZ8"/>
                 <outlet property="helpMenuPreviewJson" destination="Tys-ee-tfE" id="uca-2Y-cTK"/>
+                <outlet property="inkColourWell" destination="c2F-Ul-2wK" id="rbb-u2-ouO"/>
                 <outlet property="lineSpacingPopup" destination="vBZ-vN-pu1" id="IEu-mM-22W"/>
+                <outlet property="noteLabel" destination="PDl-a0-SSP" id="e75-F5-TpQ"/>
+                <outlet property="paperColourWell" destination="9J6-So-zYx" id="oHm-6f-jpS"/>
                 <outlet property="preferencesWindow" destination="jjd-uj-Puq" id="1ud-bv-mbH"/>
                 <outlet property="reportWindow" destination="nk4-l2-g5W" id="SNf-z1-JQ2"/>
-                <outlet property="secondColourWell" destination="9J6-So-zYx" id="1Xf-kU-lOI"/>
                 <outlet property="useLightCheckbox" destination="BoQ-JX-H8c" id="f1n-7h-UDu"/>
                 <outlet property="versionLabel" destination="gnK-6R-XxR" id="MtR-Lf-h6k"/>
                 <outlet property="whatsNewWebView" destination="JhS-5O-6sp" id="hrq-0G-CPr"/>
@@ -219,7 +220,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="6se-PD-FqD"/>
                         </constraints>
-                        <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" alignment="center" title="PreviewText provides QuickLook previews and icon thumbnails for text files." id="H6b-i5-oEp">
+                        <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" alignment="center" title="PreviewText provides QuickLook previews and icon thumbnails for certain text files." id="H6b-i5-oEp">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -232,7 +233,7 @@
                         </constraints>
                         <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" alignment="center" id="sLV-0q-11K">
                             <font key="font" metaFont="system"/>
-                            <string key="title">Run this app once to register its Previewer and Thumbnailer application extensions,  which you can then manage in System Preferences &gt; Extensions &gt; Quick Look.</string>
+                            <string key="title">Run this app once to register its Text Previewer and Text Thumbnailer application extensions,  which you can then manage in System Preferences &gt; Extensions &gt; Quick Look.</string>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -545,7 +546,7 @@ DQ
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YAR-RZ-VG6">
                         <rect key="frame" x="18" y="198" width="256" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview text foreground colour:" id="zfg-xK-Rad">
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Preview ink foreground colour:" id="zfg-xK-Rad">
                             <font key="font" usesAppearanceFont="YES"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -570,10 +571,10 @@ DQ
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </colorWell>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PDl-a0-SSP">
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDl-a0-SSP">
                         <rect key="frame" x="338" y="164" width="204" height="48"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" controlSize="small" title="These colours will automatically invert if you change from Light  to Dark Mode and vice versa." id="Or0-sw-Hnx">
+                        <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" enabled="NO" allowsUndo="NO" title="These colours will automatically invert if you change from Light  to Dark Mode and vice versa." id="Or0-sw-Hnx">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
