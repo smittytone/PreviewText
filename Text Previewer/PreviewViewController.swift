@@ -19,6 +19,7 @@ class PreviewViewController: NSViewController,
 
     @IBOutlet var renderTextView: NSTextView!
     @IBOutlet var renderTextScrollView: NSScrollView!
+    @IBOutlet var previewErrorLabel: NSTextField!
     
     
     override var nibName: NSNib.Name? {
@@ -38,6 +39,11 @@ class PreviewViewController: NSViewController,
        /*
         * Main entry point for the macOS preview system
         */
+        
+        // Prepare the view
+        self.previewErrorLabel.stringValue = ""
+        self.previewErrorLabel.isHidden = true
+        self.renderTextScrollView.isHidden = false
         
         // Get an error message ready for use
         var reportError: NSError? = nil
@@ -125,6 +131,8 @@ class PreviewViewController: NSViewController,
 
         NSLog("BUFFOON \(errString)")
         self.renderTextScrollView.isHidden = true
+        self.previewErrorLabel.stringValue = errString
+        self.previewErrorLabel.isHidden = false
         self.view.display()
     }
     
@@ -144,16 +152,16 @@ class PreviewViewController: NSViewController,
         var errDesc: String
         
         switch(code) {
-        case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE
-        case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN
-        case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
-        case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
-            errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
-        default:
-            errDesc = "UNKNOWN ERROR"
+            case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_INACCESSIBLE:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_INACCESSIBLE
+            case BUFFOON_CONSTANTS.ERRORS.CODES.FILE_WONT_OPEN:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.FILE_WONT_OPEN
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_TS_STRING:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
+            default:
+                errDesc = "UNKNOWN ERROR"
         }
 
         return NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,

@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="Text_Previewer" customModuleProvider="target">
             <connections>
+                <outlet property="previewErrorLabel" destination="gfz-0M-XrH" id="4YR-Y3-FWu"/>
                 <outlet property="renderTextScrollView" destination="W9l-6S-rRP" id="hNd-aj-qCO"/>
                 <outlet property="renderTextView" destination="Qsk-rg-dDO" id="gs3-Pg-zW2"/>
                 <outlet property="view" destination="c22-O7-iKe" id="NRM-P4-wb6"/>
@@ -45,6 +46,15 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfz-0M-XrH">
+                    <rect key="frame" x="-2" y="171" width="598" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" alignment="center" title="Error!" id="HA4-tS-Nmo">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="W9l-6S-rRP" secondAttribute="trailing" id="0nf-OG-uFE"/>
