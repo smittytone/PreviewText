@@ -12,6 +12,7 @@ import CoreServices
 import WebKit
 
 
+
 @main
 final class AppDelegate: NSObject,
                          NSApplicationDelegate,
@@ -53,6 +54,7 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var backgroundLabel: NSTextField!
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
     @IBOutlet weak var noteLabel: NSTextField!
+    @IBOutlet weak var previewView: NSTextView!
 
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
@@ -271,8 +273,9 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func doShowPreferences(sender: Any) {
 
-        // Display the 'Preferences' sheet
-
+        // Prep the preview view
+        self.previewView.isSelectable = false
+        
         // Check for the OS mode
         self.isLightMode = isMacInLightMode()
         
@@ -312,7 +315,7 @@ final class AppDelegate: NSObject,
         }
         
         // Set the colour shift warning's state
-        self.noteLabel.alphaValue = !self.isLightMode && self.doShowLightBackground ? 0.25 : 1.0
+        self.noteLabel.alphaValue = self.doShowLightBackground ? 0.25 : 1.0
         
         // Set the font name popup
         // List the current system's monospace fonts
@@ -338,6 +341,9 @@ final class AppDelegate: NSObject,
                 self.lineSpacingPopup.selectItem(at: 0)
         }
         
+        // Draw a preview preview
+        doRenderPreview()
+        
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
     }
@@ -353,13 +359,12 @@ final class AppDelegate: NSObject,
         
         let index: Int = Int(self.fontSizeSlider.floatValue)
         self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        doRenderPreview()
     }
 
 
     /**
-     Called when the user selects a font from either list.
-
-     FROM 1.1.0
+     Called when the user selects a font from the list.
 
      - Parameters:
         - sender: The source of the action.
@@ -368,8 +373,24 @@ final class AppDelegate: NSObject,
         
         // Update the menu of available styles
         setStylePopup()
+        
+        // Update the preview
+        doRenderPreview()
     }
 
+    
+    /**
+     Called when the user selects a style from the list.
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doUpdateStyle(sender: Any) {
+        
+        // Update the preview
+        doRenderPreview()
+    }
+    
     
     /**
         Close the **Preferences** sheet without saving.
@@ -507,27 +528,110 @@ final class AppDelegate: NSObject,
     /**
         Respond to a click on the **use light background** checkbox.
 
-        Update the colour well values accordingly.
+        This is only possible in Dark Mode (control disabled in Light Mode).
 
         - Parameters:
             - sender: The source of the action.
      */
     @IBAction @objc func doSwitchColours(_ sender: Any) {
         
-        if self.useLightCheckbox.state == .on {
-            // Light mode, so ink = foreground, paper = background
-            self.inkColourWell.color = NSColor.hexToColour(self.inkColourHex)
-            self.paperColourWell.color = NSColor.hexToColour(self.paperColourHex)
-        } else {
-            // Dark mode, so ink = background, paper = foreground
-            self.inkColourWell.color = NSColor.hexToColour(self.paperColourHex)
-            self.paperColourWell.color = NSColor.hexToColour(self.inkColourHex)
+        // Swap the colours
+        let tempColour: NSColor = self.inkColourWell.color
+        self.inkColourWell.color = self.paperColourWell.color
+        self.paperColourWell.color = tempColour
+        
+        // Update the preview
+        doRenderPreview()
+        
+        // Set the warning note's state (greyed out when it's not relevant)
+        self.noteLabel.alphaValue = self.useLightCheckbox.state == .on ? 0.25 : 1.0
+    }
+    
+    
+    /**
+        Called when either NSColorWell's value is changed.
+
+        - Parameters:
+            - sender: The source of the action.
+     */
+    @IBAction @objc func doChangeColours(_ sender: Any) {
+        
+        // Just update the preview.
+        // This reads the new colours.
+        doRenderPreview()
+    }
+    
+    
+    /**
+        Render a preview sample based on the current NSColorWell colours
+        and mode settings.
+     */
+    private func doRenderPreview() {
+
+        // Load in the code sample we'll preview the themes with
+        guard let loadedCode = loadBundleFile(BUFFOON_CONSTANTS.FILE_CODE_SAMPLE) else { return }
+        
+        let common: Common = Common.init(false)
+        common.paperColour = self.paperColourWell.color.hexString
+        common.inkColour = self.inkColourWell.color.hexString
+        common.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
+        
+        var lineSpacing: CGFloat = 1.0
+        switch(self.lineSpacingPopup.indexOfSelectedItem) {
+            case 1:
+                lineSpacing = 1.15
+            case 2:
+                lineSpacing = 1.5
+            case 3:
+                lineSpacing = 2.0
+            default:
+                lineSpacing = 1.0
         }
         
-        self.noteLabel.alphaValue = (!self.isLightMode && self.useLightCheckbox.state == .on) ? 0.25 : 1.0
+        common.lineSpacing = lineSpacing
+        common.setProperties(false, getPostScriptName() ?? BUFFOON_CONSTANTS.BODY_FONT_NAME)
+        
+        // Render the sample text and drop it into the view
+        let pas: NSAttributedString = common.getAttributedString(loadedCode)
+        self.previewView.backgroundColor = NSColor.hexToColour(common.paperColour)
+
+        if let renderTextStorage: NSTextStorage = self.previewView.textStorage {
+            renderTextStorage.beginEditing()
+            renderTextStorage.setAttributedString(pas)
+            renderTextStorage.endEditing()
+            self.previewView.display()
+        }
     }
 
-
+    
+    /**
+     Load a known text file from the app bundle.
+     
+     - Parameters:
+        - file: The name of the text file without its extension.
+     
+     - Returns: The contents of the loaded file
+     */
+    private func loadBundleFile(_ fileName: String, _ type: String = "txt") -> String? {
+        
+        // Load the required resource and return its contents
+        guard let filePath: String = Bundle.main.path(forResource: fileName, ofType: type)
+        else {
+            // TODO Post error
+            return nil
+        }
+        
+        do {
+            let fileContents: String = try String.init(contentsOf: URL.init(fileURLWithPath: filePath))
+            return fileContents
+        } catch {
+            // TODO Post error
+        }
+        
+        return nil
+    }
+    
+    
     // MARK: What's New Sheet Functions
 
     /**
@@ -774,17 +878,19 @@ final class AppDelegate: NSObject,
             //        we're coming FROM, not what it has changed TO
             self.useLightCheckbox.isEnabled = !self.isLightMode
             
-            // Swap colorwell values around
-            if self.isLightMode || self.useLightCheckbox.state == .on {
-                // Light mode; dark mode but user wants light previews
-                // so top = foreground, bottom = background
-                self.inkColourWell.color = NSColor.hexToColour(self.inkColourHex)
-                self.paperColourWell.color = NSColor.hexToColour(self.paperColourHex)
-            } else {
-                // Dark mode, so body = background, back = foreground
-                self.inkColourWell.color = NSColor.hexToColour(self.paperColourHex)
-                self.paperColourWell.color = NSColor.hexToColour(self.inkColourHex)
+            if self.useLightCheckbox.state == .off {
+                // Swap the NSColorWell values around as we're
+                // changing mode -- the checkbox freezes the mode
+                let tempColour: NSColor = self.inkColourWell.color
+                self.inkColourWell.color = self.paperColourWell.color
+                self.paperColourWell.color = tempColour
+                
+                // Update the preview
+                doRenderPreview()
             }
+            
+            // Set the warning note's state (greyed out when it's not relevant)
+            self.noteLabel.alphaValue = self.useLightCheckbox.state == .on ? 0.25 : 1.0
         }
     }
     

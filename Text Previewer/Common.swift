@@ -20,14 +20,13 @@ final class Common: NSObject {
     var isLightMode: Bool               = true
     var inkColour: String               = BUFFOON_CONSTANTS.INK_COLOUR_HEX
     var paperColour: String             = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
-    
+    var fontSize: CGFloat               = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
+    var lineSpacing: CGFloat            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     
     // MARK: - Private Properties
     
     private var isThumbnail: Bool       = false
-    private var fontSize: CGFloat       = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
     private var alwaysLightMode: Bool   = false
-    private var lineSpacing: CGFloat    = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     
     // String artifacts...
     private var textAtts: [NSAttributedString.Key: Any] = [:]
@@ -56,53 +55,56 @@ final class Common: NSObject {
     }
     
     
-    func setProperties() {
+    func setProperties(_ usePrefs: Bool = true, _ fontName: String = BUFFOON_CONSTANTS.BODY_FONT_NAME) {
         
-        var fontBaseName: String  = BUFFOON_CONSTANTS.BODY_FONT_NAME
+        var baseFontName: String = fontName
+        var baseInkColour: String = BUFFOON_CONSTANTS.INK_COLOUR_HEX
+        var basePaperColour: String = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
         
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
-        if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
-            // First check the Mac's mode
-            self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
-            
-            // This should be true if we're rendering a thumbnail, the user wants
-            // a dark-on-light preview even in Dark Mode, or the Mac is in Light Mode
-            self.isLightMode = (isThumbnail || self.alwaysLightMode || isMacInLightMode())
-            
-            // Set current ink and paper colours
-            let baseInkColour: String = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
-            let basePaperColour: String = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
-            
-            // Set the used colours according to the mode
-            if isLightMode {
-                self.inkColour = baseInkColour
-                self.paperColour = basePaperColour
-            } else {
-                self.inkColour = basePaperColour
-                self.paperColour = baseInkColour
+        if usePrefs {
+            if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
+                // First check the Mac's mode
+                self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
+                
+                // This should be true if we're rendering a thumbnail, the user wants
+                // a dark-on-light preview even in Dark Mode, or the Mac is in Light Mode
+                self.isLightMode = (isThumbnail || self.alwaysLightMode || isMacInLightMode())
+                
+                // Set current ink and paper colours
+                baseInkColour = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
+                basePaperColour = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+                
+                // Set the used colours according to the mode
+                if isLightMode {
+                    self.inkColour = baseInkColour
+                    self.paperColour = basePaperColour
+                } else {
+                    self.inkColour = basePaperColour
+                    self.paperColour = baseInkColour
+                }
+                
+                // Get font sizes
+                self.fontSize = isThumbnail
+                    ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE
+                    : CGFloat(prefs.float(forKey: "com-bps-previewtext-base-font-size"))
+                baseFontName = prefs.string(forKey: "com-bps-previewtext-base-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+                
+                // Set line spacing
+                self.lineSpacing = CGFloat(prefs.float(forKey: "com-bps-previewtext-line-spacing")) 
             }
             
-            // Get font sizes
-            self.fontSize = isThumbnail
-                            ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE
-                            : CGFloat(prefs.float(forKey: "com-bps-previewtext-base-font-size"))
-            fontBaseName = prefs.string(forKey: "com-bps-previewtext-base-font-name") ??
-                BUFFOON_CONSTANTS.BODY_FONT_NAME
-            
-            // Set line spacing
-            self.lineSpacing = CGFloat(prefs.float(forKey: "com-bps-previewtext-line-spacing"))
-        }
-        
-        // Just in case the above block reads in zero values
-        // NOTE The other values CAN be zero
-        if self.fontSize < CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0]) ||
-            self.fontSize > CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1]) {
-            self.fontSize = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+            // Just in case the above block reads in zero values
+            // NOTE The other values CAN be zero
+            if self.fontSize < CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[0]) ||
+                self.fontSize > CGFloat(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS.count - 1]) {
+                self.fontSize = CGFloat(isThumbnail ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE : BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE)
+            }
         }
         
         // Create the font we'll use
         var font: NSFont
-        if let chosenFont: NSFont = NSFont.init(name: fontBaseName, size: self.fontSize) {
+        if let chosenFont: NSFont = NSFont.init(name: baseFontName, size: self.fontSize) {
             font = chosenFont
         } else {
             font = NSFont.systemFont(ofSize: self.fontSize)

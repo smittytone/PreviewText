@@ -14,6 +14,8 @@
 		3B1FA42B28C124A1001DA63C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B67EB9428BCB0A20048F8AE /* Constants.swift */; };
 		3B1FA42D28C12D99001DA63C /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE355BC28BCD0F600523296 /* Secrets.swift */; };
 		3B1FA42E28C12DB2001DA63C /* GenericColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B67EB9A28BCB3070048F8AE /* GenericColorExtensions.swift */; };
+		3B59D173294B4FDC0011F048 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B67EBB828BCB5D70048F8AE /* Common.swift */; };
+		3B59D175294B54780011F048 /* text-sample.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3B59D174294B54780011F048 /* text-sample.txt */; };
 		3B67EB6528BCAEEA0048F8AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B67EB6428BCAEEA0048F8AE /* AppDelegate.swift */; };
 		3B67EB6728BCAEEB0048F8AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B67EB6628BCAEEB0048F8AE /* Assets.xcassets */; };
 		3B67EB6A28BCAEEB0048F8AE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3B67EB6828BCAEEB0048F8AE /* MainMenu.xib */; };
@@ -90,6 +92,7 @@
 		3B1FA42128C1242E001DA63C /* ThumbnailProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailProvider.swift; sourceTree = "<group>"; };
 		3B1FA42328C1242E001DA63C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B1FA42428C1242E001DA63C /* Text_Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Text_Thumbnailer.entitlements; sourceTree = "<group>"; };
+		3B59D174294B54780011F048 /* text-sample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "text-sample.txt"; sourceTree = "<group>"; };
 		3B67EB6128BCAEEA0048F8AE /* PreviewText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B67EB6428BCAEEA0048F8AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B67EB6628BCAEEB0048F8AE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../Library/CloudStorage/OneDrive-Personal/Programming/PreviewText/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
@@ -203,6 +206,7 @@
 				3B67EB6828BCAEEB0048F8AE /* MainMenu.xib */,
 				3B67EB6B28BCAEEB0048F8AE /* PreviewText.entitlements */,
 				3BE355B928BCD07300523296 /* Info.plist */,
+				3B59D174294B54780011F048 /* text-sample.txt */,
 				3BC3F76828BD439200AA754A /* new */,
 			);
 			path = PreviewText;
@@ -386,6 +390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B67EB6728BCAEEB0048F8AE /* Assets.xcassets in Resources */,
+				3B59D175294B54780011F048 /* text-sample.txt in Resources */,
 				3BC3F76928BD439200AA754A /* new in Resources */,
 				3B67EB6A28BCAEEB0048F8AE /* MainMenu.xib in Resources */,
 			);
@@ -432,6 +437,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B59D173294B4FDC0011F048 /* Common.swift in Sources */,
 				3B67EB9828BCB1DF0048F8AE /* PMFont.swift in Sources */,
 				3BE355BD28BCD0F600523296 /* Secrets.swift in Sources */,
 				3B67EB6528BCAEEA0048F8AE /* AppDelegate.swift in Sources */,
@@ -523,7 +529,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -554,7 +560,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -710,7 +716,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -746,7 +752,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -854,7 +860,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -885,7 +891,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = Y5J3K52DNA;
 				ENABLE_HARDENED_RUNTIME = YES;

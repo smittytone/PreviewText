@@ -63,6 +63,7 @@ struct BUFFOON_CONSTANTS {
     static let THUMBNAIL_LINE_COUNT             = 32
     
     static let FONT_SIZE_OPTIONS: [CGFloat]     = [10.0, 12.0, 14.0, 16.0, 18.0, 24.0, 28.0]
+    static let PREVIEW_SIZE_OPTIONS: [CGFloat]  = [9.0,  11.0, 13.0, 15.0, 17.0, 19.0, 22.0]
 
     static let BASE_LINE_SPACING: CGFloat       = 1.0
     
@@ -76,4 +77,6 @@ struct BUFFOON_CONSTANTS {
     static let PAPER_COLOUR_HEX                 = "FFFFFFFF"
     
     static let RENDER_DEBUG                     = false
+    
+    static let FILE_CODE_SAMPLE                 = "text-sample"
 }
