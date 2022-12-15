@@ -55,7 +55,8 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var lineSpacingPopup: NSPopUpButton!
     @IBOutlet weak var noteLabel: NSTextField!
     @IBOutlet weak var previewView: NSTextView!
-
+    @IBOutlet weak var previewScrollView: NSScrollView!
+    
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
@@ -275,6 +276,9 @@ final class AppDelegate: NSObject,
 
         // Prep the preview view
         self.previewView.isSelectable = false
+        self.previewScrollView.wantsLayer = true
+        self.previewScrollView.layer?.borderWidth = 2.0
+        self.previewScrollView.layer?.cornerRadius = 8.0
         
         // Check for the OS mode
         self.isLightMode = isMacInLightMode()

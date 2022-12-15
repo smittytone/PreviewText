@@ -36,6 +36,7 @@
                 <outlet property="noteLabel" destination="PDl-a0-SSP" id="e75-F5-TpQ"/>
                 <outlet property="paperColourWell" destination="9J6-So-zYx" id="oHm-6f-jpS"/>
                 <outlet property="preferencesWindow" destination="jjd-uj-Puq" id="1ud-bv-mbH"/>
+                <outlet property="previewScrollView" destination="6sz-P1-xt2" id="fjv-1P-2pN"/>
                 <outlet property="previewView" destination="3Hh-Lw-LDd" id="ahh-bi-NvK"/>
                 <outlet property="reportWindow" destination="nk4-l2-g5W" id="SNf-z1-JQ2"/>
                 <outlet property="useLightCheckbox" destination="BoQ-JX-H8c" id="f1n-7h-UDu"/>
@@ -196,7 +197,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="610" height="432"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="610" height="432"/>
             <value key="maxSize" type="size" width="610" height="432"/>
             <value key="minFullScreenContentSize" type="size" width="610" height="432"/>
@@ -367,11 +368,11 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="560" height="408"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
-            <value key="minSize" type="size" width="560" height="402"/>
-            <value key="maxSize" type="size" width="560" height="402"/>
-            <value key="minFullScreenContentSize" type="size" width="560" height="402"/>
-            <value key="maxFullScreenContentSize" type="size" width="560" height="402"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <value key="minSize" type="size" width="560" height="408"/>
+            <value key="maxSize" type="size" width="560" height="408"/>
+            <value key="minFullScreenContentSize" type="size" width="560" height="408"/>
+            <value key="maxFullScreenContentSize" type="size" width="560" height="408"/>
             <view key="contentView" id="sR8-0k-h5k">
                 <rect key="frame" x="0.0" y="0.0" width="560" height="408"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -589,30 +590,31 @@ DQ
                             <action selector="doSwitchColours:" target="Voe-Tx-rLC" id="xE3-L0-v9x"/>
                         </connections>
                     </button>
-                    <scrollView fixedFrame="YES" borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" findBarPosition="belowContent" translatesAutoresizingMaskIntoConstraints="NO" id="6sz-P1-xt2">
+                    <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" findBarPosition="belowContent" translatesAutoresizingMaskIntoConstraints="NO" id="6sz-P1-xt2">
                         <rect key="frame" x="302" y="104" width="238" height="107"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" drawsBackground="NO" id="6TF-3o-APJ">
-                            <rect key="frame" x="1" y="1" width="236" height="105"/>
+                            <rect key="frame" x="0.0" y="0.0" width="238" height="107"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView wantsLayer="YES" editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" selectionGranularity="word" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="3Hh-Lw-LDd">
-                                    <rect key="frame" x="0.0" y="0.0" width="236" height="105"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="234" height="99"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="236" height="105"/>
+                                    <size key="minSize" width="234" height="99"/>
                                     <size key="maxSize" width="240" height="10000000"/>
                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
                             </subviews>
                         </clipView>
+                        <edgeInsets key="contentInsets" left="2" right="2" top="4" bottom="4"/>
                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="grS-sc-1M0">
                             <rect key="frame" x="-100" y="-100" width="240" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="n3j-cU-omx">
-                            <rect key="frame" x="221" y="1" width="16" height="105"/>
+                            <rect key="frame" x="220" y="4" width="16" height="99"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -689,7 +691,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="560" height="410"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="560" height="410"/>
             <value key="maxSize" type="size" width="560" height="410"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="410"/>
@@ -742,7 +744,7 @@ DQ
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="206" width="560" height="356"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <value key="minSize" type="size" width="560" height="356"/>
             <value key="maxSize" type="size" width="560" height="356"/>
             <value key="minFullScreenContentSize" type="size" width="560" height="356"/>
