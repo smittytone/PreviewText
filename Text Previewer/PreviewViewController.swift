@@ -1,6 +1,6 @@
 /*
  *  PreviewViewController.swift
- *  PreviewJson
+ *  PreviewText
  *
  *  Created by Tony Smith on 29/08/2022.
  *  Copyright © 2022 Tony Smith. All rights reserved.

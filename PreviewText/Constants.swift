@@ -1,6 +1,6 @@
 /*
  *  Constants.swift
- *  PreviewJson
+ *  PreviewText
  *
  *  Created by Tony Smith on 12/08/2020.
  *  Copyright © 2022 Tony Smith. All rights reserved.

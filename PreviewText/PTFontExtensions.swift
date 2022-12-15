@@ -1,6 +1,6 @@
 /*
  *  GenericExtensions.swift
- *  PreviewMarkdown
+ *  PreviewMarkdown/PreviewText
  *
  *  These functions can be used by all PreviewApps
  *
