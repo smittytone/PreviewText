@@ -68,7 +68,7 @@ struct BUFFOON_CONSTANTS {
     static let BASE_LINE_SPACING: CGFloat       = 1.0
     
     static let URL_MAIN                         = "https://smittytone.net/previewtext/index.html"
-    static let APP_STORE                        = "https://apps.apple.com/us/app/previewtext/idXXXXXXXX"
+    static let APP_STORE                        = "https://apps.apple.com/us/app/previewtext/id1660037028"
     static let SUITE_NAME                       = ".suite.preview-previewtext"
     static let APP_CODE_PREVIEWER               = "com.bps.previewtext.Text_Previewer"
     

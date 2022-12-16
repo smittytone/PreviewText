@@ -30,7 +30,7 @@
                 <outlet property="helpMenuOthersPreviewMarkdown" destination="a5a-JN-xae" id="efo-wb-Yel"/>
                 <outlet property="helpMenuOtherspreviewJson" destination="cvH-uO-rsZ" id="7NX-L9-FGf"/>
                 <outlet property="helpMenuOtherspreviewYaml" destination="QaP-Sh-GBM" id="dG4-9f-SZ8"/>
-                <outlet property="helpMenuPreviewJson" destination="Tys-ee-tfE" id="uca-2Y-cTK"/>
+                <outlet property="helpMenuPreviewText" destination="Tys-ee-tfE" id="7sz-oB-f5O"/>
                 <outlet property="inkColourWell" destination="c2F-Ul-2wK" id="rbb-u2-ouO"/>
                 <outlet property="lineSpacingPopup" destination="vBZ-vN-pu1" id="IEu-mM-22W"/>
                 <outlet property="noteLabel" destination="PDl-a0-SSP" id="e75-F5-TpQ"/>
@@ -685,7 +685,7 @@ DQ
                     <constraint firstItem="E2f-Ly-G4Y" firstAttribute="leading" secondItem="sR8-0k-h5k" secondAttribute="leading" constant="290" id="xwp-OT-jub"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-204" y="-806"/>
+            <point key="canvasLocation" x="-192" y="-736"/>
         </window>
         <window title="What's New" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="tKr-h4-TOq">
             <windowStyleMask key="styleMask" titled="YES"/>
@@ -700,11 +700,11 @@ DQ
                 <rect key="frame" x="0.0" y="0.0" width="560" height="410"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JhS-5O-6sp">
+                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JhS-5O-6sp">
                         <rect key="frame" x="0.0" y="60" width="560" height="350"/>
-                        <wkWebViewConfiguration key="configuration">
+                        <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO">
                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                            <wkPreferences key="preferences"/>
+                            <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO" javaScriptEnabled="NO"/>
                         </wkWebViewConfiguration>
                         <connections>
                             <outlet property="UIDelegate" destination="Voe-Tx-rLC" id="MFX-xN-VQ2"/>

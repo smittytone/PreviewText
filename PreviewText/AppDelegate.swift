@@ -22,7 +22,7 @@ final class AppDelegate: NSObject,
 
     // MARK:- Class UI Properies
     // Menu Items
-    @IBOutlet var helpMenuPreviewJson: NSMenuItem!
+    @IBOutlet var helpMenuPreviewText: NSMenuItem!
     @IBOutlet var helpAppStoreRating: NSMenuItem!
     @IBOutlet var helpMenuJson: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewMarkdown: NSMenuItem!
@@ -159,8 +159,8 @@ final class AppDelegate: NSObject,
         // Depending on the menu selected, set the load path
         if item == self.helpAppStoreRating {
             path = BUFFOON_CONSTANTS.APP_STORE + "?action=write-review"
-        } else if item == self.helpMenuPreviewJson {
-            path += "#how-to-use-previewjson"
+        } else if item == self.helpMenuPreviewText {
+            path += "#how-to-use-previewtext"
         } else if item == self.helpMenuOthersPreviewMarkdown {
             path = "https://apps.apple.com/us/app/previewmarkdown/id1492280469?ls=1"
         } else if item == self.helpMenuOthersPreviewCode {
