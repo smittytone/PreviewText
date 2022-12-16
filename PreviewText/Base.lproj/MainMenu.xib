@@ -24,15 +24,18 @@
                 <outlet property="fontSizeLabel" destination="2HA-Yj-cyf" id="psJ-3Z-WQI"/>
                 <outlet property="fontSizeSlider" destination="OfZ-N6-qKG" id="oDv-Or-Fni"/>
                 <outlet property="foregroundLabel" destination="YAR-RZ-VG6" id="3XX-C6-ARk"/>
-                <outlet property="helpAppStoreRating" destination="jLd-Pw-5jM" id="P5Q-5y-ShE"/>
-                <outlet property="helpMenuJson" destination="wpr-3q-Mcd" id="u61-rD-rsY"/>
+                <outlet property="helpMenu" destination="wpr-3q-Mcd" id="coI-gc-4vU"/>
+                <outlet property="helpMenuAppStoreRating" destination="jLd-Pw-5jM" id="CxT-pT-CAt"/>
+                <outlet property="helpMenuOnlineHelp" destination="Tys-ee-tfE" id="kgp-7t-qgs"/>
                 <outlet property="helpMenuOthersPreviewCode" destination="wRu-mF-ECh" id="FUk-g8-FN8"/>
                 <outlet property="helpMenuOthersPreviewMarkdown" destination="a5a-JN-xae" id="efo-wb-Yel"/>
                 <outlet property="helpMenuOtherspreviewJson" destination="cvH-uO-rsZ" id="7NX-L9-FGf"/>
                 <outlet property="helpMenuOtherspreviewYaml" destination="QaP-Sh-GBM" id="dG4-9f-SZ8"/>
-                <outlet property="helpMenuPreviewText" destination="Tys-ee-tfE" id="7sz-oB-f5O"/>
+                <outlet property="helpMenuReportBug" destination="9jb-nj-WtE" id="EKk-7L-9bP"/>
+                <outlet property="helpMenuWhatsNew" destination="8ow-rc-CzH" id="QnA-b5-xV5"/>
                 <outlet property="inkColourWell" destination="c2F-Ul-2wK" id="rbb-u2-ouO"/>
                 <outlet property="lineSpacingPopup" destination="vBZ-vN-pu1" id="IEu-mM-22W"/>
+                <outlet property="mainMenuSettings" destination="BOF-NM-1cW" id="u6Y-1d-5I3"/>
                 <outlet property="noteLabel" destination="PDl-a0-SSP" id="e75-F5-TpQ"/>
                 <outlet property="paperColourWell" destination="9J6-So-zYx" id="oHm-6f-jpS"/>
                 <outlet property="preferencesWindow" destination="jjd-uj-Puq" id="1ud-bv-mbH"/>
@@ -51,7 +54,7 @@
             <items>
                 <menuItem title="PreviewText" id="1Xt-HY-uBw">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="PreviewText" systemMenu="apple" id="uQy-DD-JDr">
+                    <menu key="submenu" title="PreviewText" systemMenu="apple" autoenablesItems="NO" id="uQy-DD-JDr">
                         <items>
                             <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
                                 <connections>

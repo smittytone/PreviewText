@@ -22,13 +22,17 @@ final class AppDelegate: NSObject,
 
     // MARK:- Class UI Properies
     // Menu Items
-    @IBOutlet var helpMenuPreviewText: NSMenuItem!
-    @IBOutlet var helpAppStoreRating: NSMenuItem!
-    @IBOutlet var helpMenuJson: NSMenuItem!
+    @IBOutlet var helpMenu: NSMenuItem!
+    @IBOutlet var helpMenuOnlineHelp: NSMenuItem!
+    @IBOutlet var helpMenuAppStoreRating: NSMenuItem!
+    @IBOutlet var helpMenuReportBug: NSMenuItem!
+    @IBOutlet var helpMenuWhatsNew: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewMarkdown: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewCode: NSMenuItem!
     @IBOutlet var helpMenuOtherspreviewYaml: NSMenuItem!
     @IBOutlet var helpMenuOtherspreviewJson: NSMenuItem!
+    
+    @IBOutlet var mainMenuSettings: NSMenuItem!
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
@@ -157,9 +161,9 @@ final class AppDelegate: NSObject,
         var path: String = BUFFOON_CONSTANTS.URL_MAIN
         
         // Depending on the menu selected, set the load path
-        if item == self.helpAppStoreRating {
+        if item == self.helpMenuAppStoreRating {
             path = BUFFOON_CONSTANTS.APP_STORE + "?action=write-review"
-        } else if item == self.helpMenuPreviewText {
+        } else if item == self.helpMenuOnlineHelp {
             path += "#how-to-use-previewtext"
         } else if item == self.helpMenuOthersPreviewMarkdown {
             path = "https://apps.apple.com/us/app/previewmarkdown/id1492280469?ls=1"
@@ -200,6 +204,7 @@ final class AppDelegate: NSObject,
     @IBAction @objc private func doShowReportWindow(sender: Any?) {
 
         // Reset the UI
+        hidePanelGenerators()
         self.connectionProgress.stopAnimation(self)
         self.feedbackText.stringValue = ""
 
@@ -222,6 +227,7 @@ final class AppDelegate: NSObject,
 
         self.connectionProgress.stopAnimation(self)
         self.window.endSheet(self.reportWindow)
+        showPanelGenerators()
     }
 
     
@@ -258,6 +264,7 @@ final class AppDelegate: NSObject,
         
         // No feedback, so close the sheet
         self.window.endSheet(self.reportWindow)
+        showPanelGenerators()
         
         // NOTE sheet closes asynchronously unless there was no feedback to send,
         //      or an error occured with setting up the feedback session
@@ -273,7 +280,9 @@ final class AppDelegate: NSObject,
         - sender: The source of the action.
      */
     @IBAction private func doShowPreferences(sender: Any) {
-
+        
+        hidePanelGenerators()
+        
         // Prep the preview view
         self.previewView.isSelectable = false
         self.previewScrollView.wantsLayer = true
@@ -409,6 +418,9 @@ final class AppDelegate: NSObject,
         
         // Shut the window
         self.window.endSheet(self.preferencesWindow)
+        
+        // Menu handling
+        showPanelGenerators()
     }
 
 
@@ -509,6 +521,9 @@ final class AppDelegate: NSObject,
         
         // Remove the sheet now we have the data
         self.window.endSheet(self.preferencesWindow)
+        
+        // Menu handling
+        showPanelGenerators()
     }
     
 
@@ -651,6 +666,9 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func doShowWhatsNew(_ sender: Any) {
 
+        // Menu handling
+        hidePanelGenerators()
+        
         // See if we're coming from a menu click (sender != self) or
         // directly in code from 'appDidFinishLoading()' (sender == self)
         var doShowSheet: Bool = type(of: self) != type(of: sender)
@@ -713,6 +731,9 @@ final class AppDelegate: NSObject,
 
             defaults.synchronize()
         }
+        
+        // Menu handling
+        showPanelGenerators()
     }
 
 
@@ -909,5 +930,20 @@ final class AppDelegate: NSObject,
         let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
         return (appearNameString == "NSAppearanceNameAqua")
     }
-
+    
+    
+    private func hidePanelGenerators() {
+        
+        self.helpMenuReportBug.isEnabled = false
+        self.helpMenuWhatsNew.isEnabled = false
+        self.mainMenuSettings.isEnabled = false
+    }
+    
+    
+    func showPanelGenerators() {
+        
+        self.helpMenuReportBug.isEnabled = true
+        self.helpMenuWhatsNew.isEnabled = true
+        self.mainMenuSettings.isEnabled = true
+    }
 }
