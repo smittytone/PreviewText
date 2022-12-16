@@ -166,13 +166,13 @@ final class AppDelegate: NSObject,
         } else if item == self.helpMenuOnlineHelp {
             path += "#how-to-use-previewtext"
         } else if item == self.helpMenuOthersPreviewMarkdown {
-            path = "https://apps.apple.com/us/app/previewmarkdown/id1492280469?ls=1"
+            path = BUFFOON_CONSTANTS.APP_URLS.PM
         } else if item == self.helpMenuOthersPreviewCode {
-            path = "https://apps.apple.com/us/app/previewcode/id1571797683?ls=1"
+            path = BUFFOON_CONSTANTS.APP_URLS.PC
         } else if item == self.helpMenuOtherspreviewYaml {
-            path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
+            path = BUFFOON_CONSTANTS.APP_URLS.PY
         } else if item == self.helpMenuOtherspreviewJson {
-            path = "https://apps.apple.com/us/app/previewyaml/id1564574724?ls=1"
+            path = BUFFOON_CONSTANTS.APP_URLS.PJ
         }
         
         // Open the selected website
@@ -930,20 +930,5 @@ final class AppDelegate: NSObject,
         let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
         return (appearNameString == "NSAppearanceNameAqua")
     }
-    
-    
-    private func hidePanelGenerators() {
-        
-        self.helpMenuReportBug.isEnabled = false
-        self.helpMenuWhatsNew.isEnabled = false
-        self.mainMenuSettings.isEnabled = false
-    }
-    
-    
-    func showPanelGenerators() {
-        
-        self.helpMenuReportBug.isEnabled = true
-        self.helpMenuWhatsNew.isEnabled = true
-        self.mainMenuSettings.isEnabled = true
-    }
+
 }

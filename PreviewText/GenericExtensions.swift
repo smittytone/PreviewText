@@ -199,6 +199,28 @@ extension AppDelegate {
     }
     
     
+    /**
+     Disable all panel-opening menu items.
+     */
+    func hidePanelGenerators() {
+        
+        self.helpMenuReportBug.isEnabled = false
+        self.helpMenuWhatsNew.isEnabled = false
+        self.mainMenuSettings.isEnabled = false
+    }
+    
+    
+    /**
+     Enable all panel-opening menu items.
+     */
+    func showPanelGenerators() {
+        
+        self.helpMenuReportBug.isEnabled = true
+        self.helpMenuWhatsNew.isEnabled = true
+        self.mainMenuSettings.isEnabled = true
+    }
+    
+    
     // MARK: - URLSession Delegate Functions
 
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
