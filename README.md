@@ -1,4 +1,4 @@
-# PreviewText 1.0.0
+# PreviewText 1.0.1
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
@@ -26,6 +26,8 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 ## Release Notes ##
 
+* 1.0.1 *Unreleased*
+    *
 * 1.0.0 *23 December 2022*
     * Initial public release.
 
