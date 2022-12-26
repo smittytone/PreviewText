@@ -2,7 +2,7 @@
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
-![PreviewJson App Store QR code](qr-code.jpg)
+![PreviewJson App Store QR code](qr-code.png)
 
 ## Source Code ##
 
@@ -30,7 +30,7 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 ## Release Notes ##
 
-* 1.0.0 *Unreleased*
+* 1.0.0 *23 December 2022*
     * Initial public release.
 
 ## Copyright and Credits ##
