@@ -2,8 +2,8 @@
  *  ThumbnailProvider.swift
  *  PreviewText
  *
- *  Created by Tony Smith on 01/09/2022.
- *  Copyright © 2022 Tony Smith. All rights reserved.
+ *  Created by Tony Smith on 01/09/2023.
+ *  Copyright © 2023 Tony Smith. All rights reserved.
  */
 
 

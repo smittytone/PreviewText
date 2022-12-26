@@ -2,8 +2,8 @@
  *  AppDelegate.swift
  *  PreviewText
  *
- *  Created by Tony Smith on 9/08/2022.
- *  Copyright © 2022 Tony Smith. All rights reserved.
+ *  Created by Tony Smith on 9/08/2023.
+ *  Copyright © 2023 Tony Smith. All rights reserved.
  */
 
 
@@ -78,14 +78,13 @@ final class AppDelegate: NSObject,
     private  var feedbackPath: String           = MNU_SECRETS.ADDRESS.B
     private  var lineSpacing: CGFloat           = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     private  var doShowLightBackground: Bool    = false
-    private  var isMontereyPlus: Bool           = false
+    internal var isMontereyPlus: Bool           = false
     private  var isLightMode: Bool              = true
     private  var havePrefsChanged: Bool         = false
-    
     internal var bodyFonts: [PMFont] = []
     
 
-    // MARK:- Class Lifecycle Functions
+    // MARK: - Class Lifecycle Functions
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         
@@ -241,7 +240,7 @@ final class AppDelegate: NSObject,
     }
 
 
-    // MARK: Report Functions
+    // MARK: - Report Functions
 
     /**
      Display a window in which the user can submit feedback, or report a bug.
@@ -319,7 +318,7 @@ final class AppDelegate: NSObject,
     }
     
 
-    // MARK: Preferences Functions
+    // MARK: - Preferences Functions
 
     /**
      Initialise and display the **Preferences** sheet.
@@ -717,7 +716,7 @@ final class AppDelegate: NSObject,
     }
     
     
-    // MARK: What's New Sheet Functions
+    // MARK: - What's New Sheet Functions
 
     /**
         Show the **What's New** sheet.
@@ -732,9 +731,6 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func doShowWhatsNew(_ sender: Any) {
 
-        // Hide manus we don't want used
-        hidePanelGenerators()
-        
         // See if we're coming from a menu click (sender != self) or
         // directly in code from 'appDidFinishLoading()' (sender == self)
         var doShowSheet: Bool = type(of: self) != type(of: sender)
@@ -749,8 +745,12 @@ final class AppDelegate: NSObject,
             }
         }
       
-        // Configure and show the sheet: first, get the folder path
+        // Configure and show the sheet
         if doShowSheet {
+            // Hide manus we don't want used
+            hidePanelGenerators()
+            
+            // First, get the folder path
             let htmlFolderPath = Bundle.main.resourcePath! + "/new"
             
             // Set up the WKWebBiew: no elasticity, horizontal scroller
@@ -812,9 +812,6 @@ final class AppDelegate: NSObject,
 
         // Check if each preference value exists -- set if it doesn't
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            
-            //defaults.removeObject(forKey: "com-bps-previewtext-ink-colour-hex")
-            //defaults.removeObject(forKey: "com-bps-previewtext-paper-colour-hex")
             
             // Preview body font size, stored as a CGFloat
             // Default: 16.0
@@ -943,17 +940,6 @@ final class AppDelegate: NSObject,
     
     
     /**
-     Get system and state information and record it for use during run.
-     */
-    private func recordSystemState() {
-        
-        // First ensure we are running on Mojave or above - Dark Mode is not supported by earlier versons
-        let sysVer: OperatingSystemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        self.isMontereyPlus = (sysVer.majorVersion >= 12)
-    }
-    
-    
-    /**
      Handler for macOS UI mode change notifications
      */
     @objc private func interfaceModeChanged() {
@@ -983,18 +969,6 @@ final class AppDelegate: NSObject,
             // Set the warning note's state (greyed out when it's not relevant)
             self.noteLabel.alphaValue = self.useLightCheckbox.state == .on ? 0.25 : 1.0
         }
-    }
-    
-    
-    /**
-     Determine whether the host Mac is in light mode.
-     
-     - Returns: `true` if the Mac is in light mode, otherwise `false`.
-     */
-    private func isMacInLightMode() -> Bool {
-        
-        let appearNameString: String = NSApp.effectiveAppearance.name.rawValue
-        return (appearNameString == "NSAppearanceNameAqua")
     }
 
 }
