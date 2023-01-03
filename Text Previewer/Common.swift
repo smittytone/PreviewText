@@ -41,14 +41,6 @@ final class Common: NSObject {
         
         super.init()
         
-        // Watch for macOS UI mode changes
-        /*
-        DistributedNotificationCenter.default.addObserver(self,
-                                                          selector: #selector(interfaceModeChanged),
-                                                          name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
-                                                          object: nil)
-        */
-        
         // Set up instance properties
         self.isThumbnail = isThumbnail
         setProperties()

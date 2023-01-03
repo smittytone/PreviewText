@@ -27,10 +27,11 @@ Changing these settings will affect previews immediately, but may not affect thu
 ## Release Notes ##
 
 * 1.0.1 *Unreleased*
-    *
+    * Fix issue with line-spacing (thanks @aaronkollasch).
+    * Correctly preview line-spacing changes. 
 * 1.0.0 *23 December 2022*
     * Initial public release.
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2022, Tony Smith.
+Primary app code and UI design &copy; 2023, Tony Smith.
