@@ -112,8 +112,8 @@ final class Common: NSObject {
         
         // Set up the attributed string components we may use during rendering
         let textParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
-        textParaStyle.paragraphSpacing = self.lineSpacing * self.fontSize * 0.5
         textParaStyle.lineSpacing = (self.lineSpacing - 1) * self.fontSize
+        //textParaStyle.paragraphSpacing = self.lineSpacing * self.fontSize * 0.5
         
         self.textAtts = [
             .foregroundColor: NSColor.hexToColour(self.inkColour),
