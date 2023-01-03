@@ -713,6 +713,9 @@ final class AppDelegate: NSObject,
     @IBAction private func checkboxClicked(sender: Any) {
         
         self.havePrefsChanged = true
+        
+        // FROM 1.0.1 -- Render preview on changes
+        self.doRenderPreview()
     }
     
     
