@@ -27,6 +27,7 @@ Changing these settings will affect previews immediately, but may not affect thu
 ## Release Notes ##
 
 - 1.0.2 *Unreleased*
+    - Make previewed text selectable.
     - Add support for `go.mod`, `go.sum` and `go.work` files.
 - 1.0.1 *21 January 2023*
     - Fix issue with line-spacing (thanks @aaronkollasch).
