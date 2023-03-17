@@ -22,6 +22,7 @@
 				<string>com.bps.rst</string>
 				<string>com.bps.nfo</string>
 				<string>com.bps.me</string>
+				<string>com.bps.goconfig</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>

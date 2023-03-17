@@ -20,6 +20,7 @@
 				<string>com.bps.1st</string>
 				<string>com.bps.rst</string>
 				<string>com.bps.me</string>
+				<string>com.bps.goconfig</string>
 			</array>
 			<key>QLThumbnailMinimumDimension</key>
 			<integer>0</integer>

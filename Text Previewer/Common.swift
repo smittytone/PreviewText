@@ -11,6 +11,7 @@
 import Foundation
 import Cocoa
 import AppKit
+import UniformTypeIdentifiers
 
 
 final class Common: NSObject {
@@ -164,6 +165,43 @@ final class Common: NSObject {
             // ...otherwise reset the properties
             setProperties()
         }
+    }
+    
+    
+    /**
+     Get the supplied source file's UTI.
+
+     We'll use it to determine the file's programming language.
+
+     - Parameters:
+        - sourceFilePath: The path to the source code file.
+
+     - Returns: The source code's UTI.
+    */
+    func getSourceFileUTI(_ sourceFilePath: String) -> String {
+
+        // Create a URL reference to the sample file
+        var sourceFileUTI: String = ""
+        let sourceFileURL = URL.init(fileURLWithPath: sourceFilePath)
+
+        do {
+            // Read back the UTI from the URL
+            // Use Big Sur's UTType API
+            if #available(macOS 11, *) {
+                if let uti: UTType = try sourceFileURL.resourceValues(forKeys: [.contentTypeKey]).contentType {
+                    sourceFileUTI = uti.identifier
+                }
+            } else {
+                // NOTE '.typeIdentifier' yields an optional
+                if let uti: String = try sourceFileURL.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+                    sourceFileUTI = uti
+                }
+            }
+        } catch {
+            // NOP
+        }
+
+        return sourceFileUTI
     }
 }
 

@@ -20,6 +20,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         case badFileLoad(String)
         case badFileUnreadable(String)
         case badFileUnsupportedEncoding(String)
+        case badFileUnsupportedFile(String)
         case badGfxBitmap
         case badGfxDraw
     }
@@ -57,10 +58,19 @@ class ThumbnailProvider: QLThumbnailProvider {
                         guard let textFileString: String = String.init(data: data, encoding: encoding) else {
                             return .failure(ThumbnailerError.badFileLoad(request.fileURL.path))
                         }
-
+                        
                         // Instantiate the common code within the closure
                         let common: Common = Common.init(true)
                         
+                        // FROM 1.0.2
+                        // Get the UTI to check Go config files
+                        let sourceFileUTI: String = common.getSourceFileUTI(request.fileURL.path).lowercased()
+                        if sourceFileUTI == "com.bps.goconfig" {
+                            if !request.fileURL.lastPathComponent.starts(with: "go.") {
+                                return .failure(ThumbnailerError.badFileUnsupportedFile("Not a Go config file"))
+                            }
+                        }
+
                         // Only render the lines likely to appear in the thumbnail
                         let lines: [String] = (textFileString as NSString).components(separatedBy: "\n")
                         var shortString: String = ""

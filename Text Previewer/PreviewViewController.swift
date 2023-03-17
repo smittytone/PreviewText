@@ -60,6 +60,18 @@ class PreviewViewController: NSViewController,
                 let data: Data = try Data.init(contentsOf: url, options: [.uncached])
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
                 
+                // FROM 1.0.2
+                // Get the UTI to check Go config files
+                let sourceFileUTI: String = common.getSourceFileUTI(url.path).lowercased()
+                if sourceFileUTI == "com.bps.goconfig" {
+                    if !url.lastPathComponent.starts(with: "go.") {
+                        reportError = setError(BUFFOON_CONSTANTS.ERRORS.CODES.BAD_GO_CONFIG)
+                        showError(reportError!.userInfo[NSLocalizedDescriptionKey] as! String)
+                        handler(reportError)
+                        return
+                    }
+                }
+                
                 if let textString = String.init(data: data, encoding: encoding) {
                     // Get the key string first
                     let textAttString: NSAttributedString = common.getAttributedString(textString)
@@ -160,6 +172,8 @@ class PreviewViewController: NSViewController,
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_TS_STRING
             case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_MD_STRING:
                 errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_MD_STRING
+            case BUFFOON_CONSTANTS.ERRORS.CODES.BAD_GO_CONFIG:
+                errDesc = BUFFOON_CONSTANTS.ERRORS.MESSAGES.BAD_GO_CONFIG
             default:
                 errDesc = "UNKNOWN ERROR"
         }
@@ -168,4 +182,5 @@ class PreviewViewController: NSViewController,
                        code: code,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])
     }
+    
 }

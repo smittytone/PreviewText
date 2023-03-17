@@ -166,6 +166,24 @@
 				</array>
 			</dict>
 		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.bps.goconfig</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>work</string>
+					<string>sum</string>
+					<string>mod</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

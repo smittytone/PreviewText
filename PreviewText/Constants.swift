@@ -21,6 +21,8 @@ struct BUFFOON_CONSTANTS {
             static let FILE_WONT_OPEN           = 401
             static let BAD_MD_STRING            = 402
             static let BAD_TS_STRING            = 403
+            // FROM 1.0.2
+            static let BAD_GO_CONFIG            = 404
         }
 
         struct MESSAGES {
@@ -29,6 +31,8 @@ struct BUFFOON_CONSTANTS {
             static let FILE_WONT_OPEN           = "Can't open file"
             static let BAD_MD_STRING            = "Can't get JSON data"
             static let BAD_TS_STRING            = "Can't access NSTextView's TextStorage"
+            // FROM 1.0.2
+            static let BAD_GO_CONFIG            = "This file is not a Go config file"
         }
     }
 
