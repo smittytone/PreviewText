@@ -75,6 +75,8 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>nfo</string>
+					<string>info</string>
+					<string>inf</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>
@@ -181,6 +183,23 @@
 					<string>work</string>
 					<string>sum</string>
 					<string>mod</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.content</string>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.bps.io</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>in</string>
+					<string>out</string>
 				</array>
 			</dict>
 		</dict>
