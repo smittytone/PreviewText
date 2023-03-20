@@ -93,6 +93,7 @@
 		3B1FA42328C1242E001DA63C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B1FA42428C1242E001DA63C /* Text_Thumbnailer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Text_Thumbnailer.entitlements; sourceTree = "<group>"; };
 		3B59D174294B54780011F048 /* text-sample.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "text-sample.txt"; sourceTree = "<group>"; };
+		3B60841629C86636000D371F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		3B67EB6128BCAEEA0048F8AE /* PreviewText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PreviewText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B67EB6428BCAEEA0048F8AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B67EB6628BCAEEB0048F8AE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../../Library/CloudStorage/OneDrive-Personal/Programming/PreviewText/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
@@ -169,6 +170,14 @@
 			path = "Text Thumbnailer";
 			sourceTree = "<group>";
 		};
+		3B60841529C86620000D371F /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				3B60841629C86636000D371F /* README.md */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
 		3B67EB5828BCAEEA0048F8AE = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +185,7 @@
 				3B67EBA528BCB3610048F8AE /* Text Previewer */,
 				3B1FA42028C1242E001DA63C /* Text Thumbnailer */,
 				3B67EBA228BCB3610048F8AE /* Frameworks */,
+				3B60841529C86620000D371F /* Misc */,
 				3B67EB6228BCAEEA0048F8AE /* Products */,
 			);
 			sourceTree = "<group>";
