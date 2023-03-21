@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="panel" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="Qsk-rg-dDO">
+                            <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="Qsk-rg-dDO">
                                 <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -46,9 +46,11 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfz-0M-XrH">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfz-0M-XrH">
                     <rect key="frame" x="-2" y="171" width="598" height="16"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="t8i-EC-Ink"/>
+                    </constraints>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" alignment="center" title="Error!" id="HA4-tS-Nmo">
                         <font key="font" usesAppearanceFont="YES"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -58,6 +60,9 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="W9l-6S-rRP" secondAttribute="trailing" id="0nf-OG-uFE"/>
+                <constraint firstItem="gfz-0M-XrH" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="5Fg-CD-sP5"/>
+                <constraint firstAttribute="trailing" secondItem="gfz-0M-XrH" secondAttribute="trailing" id="6Lt-LE-wc9"/>
+                <constraint firstItem="gfz-0M-XrH" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="8dN-f2-22B"/>
                 <constraint firstItem="W9l-6S-rRP" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="U0m-Te-sdQ"/>
                 <constraint firstItem="W9l-6S-rRP" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="dZf-mD-9PM"/>
                 <constraint firstAttribute="bottom" secondItem="W9l-6S-rRP" secondAttribute="bottom" id="do2-Cb-EAZ"/>
