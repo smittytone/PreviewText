@@ -1,8 +1,8 @@
-# PreviewText 1.0.2
+# PreviewText 1.0.3
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
-*PreviewText- provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.nfo`, `.1st`, `.asc`, `.srt` and `.sub`.
+*PreviewText- provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.nfo`, `.1st`, `.srt` and `.sub`.
 
 *PreviewText- is [available free of charge from the Mac App Store](https://apps.apple.com/us/app/previewtext/id1660037028).
 
@@ -26,6 +26,8 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 ## Release Notes ##
 
+- 1.0.3 *Unreleased*
+    - Remove `.asc` — conflict with [PreviewCode](https://smittytone.net/previewcode/index.html) for Asciidoc files.
 - 1.0.2 *22 March 2023*
     - Make previewed text selectable.
     - Support `go.mod`, `go.sum` and `go.work` files.
