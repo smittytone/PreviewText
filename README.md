@@ -26,7 +26,7 @@ Changing these settings will affect previews immediately, but may not affect thu
 
 ## Release Notes ##
 
-- 1.0.3 *Unreleased*
+- 1.0.3 *12 May 2023*
     - Remove `.asc` — conflict with [PreviewCode](https://smittytone.net/previewcode/index.html) for Asciidoc files.
 - 1.0.2 *22 March 2023*
     - Make previewed text selectable.
