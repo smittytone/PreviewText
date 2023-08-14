@@ -1,4 +1,4 @@
-# PreviewText 1.0.3
+# PreviewText 1.0.4
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
@@ -7,10 +7,6 @@ QuickLook preview and icon thumbnailing app extensions for macOS Catalina and be
 *PreviewText* is [available free of charge from the Mac App Store](https://apps.apple.com/us/app/previewtext/id1660037028).
 
 ![PreviewText App Store QR code](qr-code.png)
-
-## Source Code ##
-
-The source code is provided here for inspection and inspiration. The code will not build as is: graphical, other non-code resources and some code components are not included in the source release. To build PreviewText from scratch, you will need to add these files yourself or remove them from your fork.
 
 ## Installation and Usage ##
 
@@ -24,8 +20,26 @@ You can change some of the key elements of the preview by using the **Preference
 
 Changing these settings will affect previews immediately, but may not affect thumbnail until you open a folder that has not been previously opened in the current login session.
 
+## Source Code
+
+This repository contains the primary source code for *PreviewText*. Certain graphical assets, code components and data files are not included. To build *PreviewText* from scratch, you will need to add these files yourself or remove them from your fork.
+
+The files `REPLACE_WITH_YOUR_FUNCTIONS` and `REPLACE_WITH_YOUR_CODES` must be replaced with your own files. The former will contain your `sendFeedback(_ feedback: String) -> URLSessionTask?` function. The latter your Developer Team ID, used as the App Suite identifier prefix.
+
+You will need to generate your own `Assets.xcassets` file containing the app icon, `app_logo.png` and theme screenshots.
+
+You will need to create your own `new` directory containing your own `new.html` file.
+
+## Contributions ##
+
+Contributions are welcome, but pull requestss can only be accepted when they target the `develop` branch. PRs targetting `main` will be rejected.
+
+Contributions will only be accepted if they code they contain is licensed under the terms of [the MIT Licence](#LICENSE.md)
+
 ## Release Notes ##
 
+- 1.0.4 *14 August 2023*
+    - Non-shipping release: repo/code reorganisation.
 - 1.0.3 *12 May 2023*
     - Remove `.asc` — conflict with [PreviewCode](https://smittytone.net/previewcode/index.html) for Asciidoc files.
 - 1.0.2 *22 March 2023*

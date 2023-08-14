@@ -60,11 +60,11 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var noteLabel: NSTextField!
     @IBOutlet weak var previewView: NSTextView!
     @IBOutlet weak var previewScrollView: NSScrollView!
-    
+
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
     @IBOutlet weak var whatsNewWebView: WKWebView!
-    
+
 
     // MARK:- Private Properies
     internal var whatsNewNav: WKNavigation?     = nil
@@ -74,15 +74,20 @@ final class AppDelegate: NSObject,
     private  var bodyFontName: String           = BUFFOON_CONSTANTS.BODY_FONT_NAME
     private  var inkColourHex: String           = BUFFOON_CONSTANTS.INK_COLOUR_HEX
     private  var paperColourHex: String         = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
-    private  var appSuiteName: String           = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
-    private  var feedbackPath: String           = MNU_SECRETS.ADDRESS.B
     private  var lineSpacing: CGFloat           = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     private  var doShowLightBackground: Bool    = false
     internal var isMontereyPlus: Bool           = false
     private  var isLightMode: Bool              = true
     private  var havePrefsChanged: Bool         = false
     internal var bodyFonts: [PMFont] = []
-    
+
+    /*
+     Replace the following string with your own team ID. This is used to
+     identify the app suite and so share preferences set by the main app with
+     the previewer and thumbnailer extensions.
+     */
+    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+
 
     // MARK: - Class Lifecycle Functions
 
@@ -296,8 +301,12 @@ final class AppDelegate: NSObject,
         if feedback.count > 0 {
             // Start the connection indicator if it's not already visible
             self.connectionProgress.startAnimation(self)
+
+            /*
+             Add your own `func sendFeedback(_ feedback: String) -> URLSessionTask?` function
+             */
             
-            self.feedbackTask = submitFeedback(feedback)
+            self.feedbackTask = sendFeedback(feedback)
             
             if self.feedbackTask != nil {
                 // We have a valid URL Session Task, so start it to send
@@ -880,66 +889,8 @@ final class AppDelegate: NSObject,
         }
 
     }
-    
 
-    /**
-     Send the feedback string etc.
 
-     - Parameters:
-        - feedback: The text of the user's comment.
-
-     - Returns: A URLSessionTask primed to send the comment, or `nil` on error.
-     */
-    private func submitFeedback(_ feedback: String) -> URLSessionTask? {
-
-        // First get the data we need to build the user agent string
-        let userAgent: String = getUserAgentForFeedback()
-        let endPoint: String = MNU_SECRETS.ADDRESS.A
-
-        // Get the date as a string
-        let dateString: String = getDateForFeedback()
-
-        // Assemble the message string
-        let dataString: String = """
-         *FEEDBACK REPORT*
-         *Date:* \(dateString)
-         *User Agent:* \(userAgent)
-         *FEEDBACK:*
-         \(feedback)
-         """
-
-        // Build the data we will POST:
-        let dict: NSMutableDictionary = NSMutableDictionary()
-        dict.setObject(dataString,
-                        forKey: NSString.init(string: "text"))
-        dict.setObject(true, forKey: NSString.init(string: "mrkdwn"))
-
-        // Make and return the HTTPS request for sending
-        if let url: URL = URL.init(string: self.feedbackPath + endPoint) {
-            var request: URLRequest = URLRequest.init(url: url)
-            request.httpMethod = "POST"
-
-            do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: dict,
-                                                              options:JSONSerialization.WritingOptions.init(rawValue: 0))
-
-                request.addValue(userAgent, forHTTPHeaderField: "User-Agent")
-                request.addValue("application/json", forHTTPHeaderField: "Content-type")
-
-                let config: URLSessionConfiguration = URLSessionConfiguration.ephemeral
-                let session: URLSession = URLSession.init(configuration: config,
-                                                          delegate: self,
-                                                          delegateQueue: OperationQueue.main)
-                return session.dataTask(with: request)
-            } catch {
-                // NOP
-            }
-        }
-
-        return nil
-    }
-    
-    
     /**
      Handler for macOS UI mode change notifications
      */

@@ -15,15 +15,23 @@ import UniformTypeIdentifiers
 
 
 final class Common: NSObject {
-    
+
     // MARK: - Public Properties
-    
+
     var isLightMode: Bool               = true
     var inkColour: String               = BUFFOON_CONSTANTS.INK_COLOUR_HEX
     var paperColour: String             = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
     var fontSize: CGFloat               = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
     var lineSpacing: CGFloat            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
-    
+
+    /*
+     Replace the following string with your own team ID. This is used to
+     identify the app suite and so share preferences set by the main app with
+     the previewer and thumbnailer extensions.
+     */
+    private var appSuiteName: String = MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME
+
+
     // MARK: - Private Properties
     
     private var isThumbnail: Bool       = false
@@ -33,13 +41,13 @@ final class Common: NSObject {
     private var textAtts: [NSAttributedString.Key: Any] = [:]
     private var hr: NSAttributedString                  = NSAttributedString.init(string: "")
     private var newLine: NSAttributedString             = NSAttributedString.init(string: "")
-    
+
     var mainView: NSView? = nil
-    
+
     // MARK:- Lifecycle Functions
-    
+
     init(_ isThumbnail: Bool = false) {
-        
+
         super.init()
         
         // Set up instance properties
@@ -56,7 +64,7 @@ final class Common: NSObject {
         
         // The suite name is the app group name, set in each extension's entitlements, and the host app's
         if usePrefs {
-            if let prefs = UserDefaults(suiteName: MNU_SECRETS.PID + BUFFOON_CONSTANTS.SUITE_NAME) {
+            if let prefs = UserDefaults(suiteName: self.appSuiteName) {
                 // First check the Mac's mode
                 self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
                 
