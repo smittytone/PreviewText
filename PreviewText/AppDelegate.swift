@@ -36,7 +36,9 @@ final class AppDelegate: NSObject,
     
     // Panel Items
     @IBOutlet var versionLabel: NSTextField!
-    
+    // FROM 1.0.5
+    @IBOutlet var copyrightLabel: NSTextField!
+
     // Windows
     @IBOutlet var window: NSWindow!
 
@@ -117,7 +119,12 @@ final class AppDelegate: NSObject,
                                                           selector: #selector(interfaceModeChanged),
                                                           name: NSNotification.Name(rawValue: "AppleInterfaceThemeChangedNotification"),
                                                           object: nil)
-        
+
+        // FRON 1.0.5
+        // Auto-set the date
+        let year = Calendar(identifier: .gregorian).dateComponents([.year], from: Date()).year
+        self.copyrightLabel.stringValue = "Copyright © \(year!) Tony Smith. All rights reserved."
+
         // Centre the main window and display
         self.window.center()
         self.window.makeKeyAndOrderFront(self)
