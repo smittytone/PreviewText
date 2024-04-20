@@ -1,4 +1,4 @@
-# PreviewText 1.0.4
+# PreviewText 1.0.5
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
@@ -38,6 +38,8 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Release Notes ##
 
+- 1.0.5 *Unreleased*
+    - Revise Thumbnailer code with a view to reducing massive memory usage seen by some users, and as-yet-unexplained Thumbnailer crashes.
 - 1.0.4 *14 August 2023*
     - Non-shipping release: repo/code reorganisation.
 - 1.0.3 *12 May 2023*
@@ -54,4 +56,4 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2023, Tony Smith.
+Primary app code and UI design &copy; 2024, Tony Smith.
