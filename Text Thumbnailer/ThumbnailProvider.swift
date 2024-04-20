@@ -13,7 +13,7 @@ import QuickLookThumbnailing
 
 
 class ThumbnailProvider: QLThumbnailProvider {
-    
+
     // MARK:- Private Properties
     
     private enum ThumbnailerError: Error {
@@ -24,7 +24,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         case badGfxBitmap
         case badGfxDraw
     }
-    
+
 
     override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void) {
 
@@ -80,9 +80,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                    CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.WIDTH),
                                                    CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT))
 
-                // Instantiate an NSTextField to display the NSAttributedString render of the code
-                let textTextField: NSTextField = NSTextField.init(labelWithAttributedString: textAtts)
-                textTextField.frame = textFrame
+                // Instantiate an NSTextField to display the NSAttributedString render of the text
+                let textTextField = NSTextField.init(frame: textFrame)
+                textTextField.attributedStringValue = textAtts
+                //let textTextField: NSTextField = NSTextField.init(labelWithAttributedString: textAtts)
+                //textTextField.frame = textFrame
 
                 // Generate the bitmap from the rendered code text view
                 guard let bodyImageRep: NSBitmapImageRep = textTextField.bitmapImageRepForCachingDisplay(in: textFrame) else {
@@ -93,25 +95,33 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // Draw the code view into the bitmap
                 textTextField.cacheDisplay(in: textFrame, to: bodyImageRep)
                 
-                let iconScale: CGFloat = request.scale
-                let thumbnailFrame: CGRect = NSMakeRect(0.0,
-                                                        0.0,
-                                                        CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
-                                                        request.maximumSize.height)
-                let scaleFrame: CGRect = NSMakeRect(0.0,
-                                                    0.0,
-                                                    thumbnailFrame.width * iconScale,
-                                                    thumbnailFrame.height * iconScale)
                 if let image: CGImage = bodyImageRep.cgImage {
-                    handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
-                        context.draw(image, in: scaleFrame, byTiling: false)
-                        return true
-                    }, nil)
-                    return
-                } else {
-                    handler(nil, ThumbnailerError.badGfxDraw)
-                    return
+                    // Just in case, make a copy of the cgImage, in case
+                    // `bodyImageReg` is freed
+                    if let cgImage: CGImage = image.copy() {
+                        // Calculate image scaling, frame size, etc.
+                        let iconScale: CGFloat = request.scale
+                        let thumbnailFrame: CGRect = NSMakeRect(0.0,
+                                                                0.0,
+                                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
+                                                                request.maximumSize.height)
+                        let scaleFrame: CGRect = NSMakeRect(0.0,
+                                                            0.0,
+                                                            thumbnailFrame.width * iconScale,
+                                                            thumbnailFrame.height * iconScale)
+                        
+                        // Pass a QLThumbnailReply and no error to the supplied handler
+                        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
+                            // `scaleFrame` and `cgImage` are immutable
+                            context.draw(cgImage, in: scaleFrame, byTiling: false)
+                            return true
+                        }, nil)
+                        return
+                    }
                 }
+
+                handler(nil, ThumbnailerError.badGfxDraw)
+                return
             } catch {
                 // NOP: fall through to error
             }
