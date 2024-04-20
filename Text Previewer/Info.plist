@@ -24,6 +24,7 @@
 				<string>com.bps.me</string>
 				<string>com.bps.goconfig</string>
 				<string>com.bps.io</string>
+				<string>com.bps.toml</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>
