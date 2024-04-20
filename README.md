@@ -2,7 +2,7 @@
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
-*PreviewText* provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.nfo`, `.1st`, `.srt` and `.sub`.
+*PreviewText* provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.toml`, `.nfo`, `.1st`, `.srt` and `.sub`.
 
 *PreviewText* is [available free of charge from the Mac App Store](https://apps.apple.com/us/app/previewtext/id1660037028).
 
@@ -12,7 +12,7 @@ QuickLook preview and icon thumbnailing app extensions for macOS Catalina and be
 
 Just run the host app once to register the extensions &mdash; you can quit the app as soon as it has launched. We recommend logging out of your Mac and back in again at this point. Now you can preview textual documents using QuickLook (select an icon and hit Space), and Finder’s preview pane and **Info** panels.
 
-You can disable and re-enable the *Text Previewer-* and *Text Thumbnailer-* extensions at any time in **System Preferences > Extensions > Quick Look**.
+You can disable and re-enable the *Text Previewer* and *Text Thumbnailer* extensions at any time in **System Preferences > Extensions > Quick Look**.
 
 ### Adjusting the Preview ###
 
