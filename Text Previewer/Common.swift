@@ -23,6 +23,8 @@ final class Common: NSObject {
     var paperColour: String             = BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
     var fontSize: CGFloat               = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
     var lineSpacing: CGFloat            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
+    // FROM 1.0.5
+    var minTumbnailSize: CGFloat        = BUFFOON_CONSTANTS.MIN_THUMB_SIZS
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -66,16 +68,16 @@ final class Common: NSObject {
         if usePrefs {
             if let prefs = UserDefaults(suiteName: self.appSuiteName) {
                 // First check the Mac's mode
-                self.alwaysLightMode = prefs.bool(forKey: "com-bps-previewtext-do-use-light")
-                
+                self.alwaysLightMode = prefs.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+
                 // This should be true if we're rendering a thumbnail, the user wants
                 // a dark-on-light preview even in Dark Mode, or the Mac is in Light Mode
                 self.isLightMode = (isThumbnail || self.alwaysLightMode || isMacInLightMode())
                 
                 // Set current ink and paper colours
-                baseInkColour = prefs.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
-                basePaperColour = prefs.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
-                
+                baseInkColour = prefs.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR) ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
+                basePaperColour = prefs.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR) ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+
                 // Set the used colours according to the mode
                 if isLightMode {
                     self.inkColour = baseInkColour
@@ -88,11 +90,15 @@ final class Common: NSObject {
                 // Get font sizes
                 self.fontSize = isThumbnail
                     ? BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE
-                    : CGFloat(prefs.float(forKey: "com-bps-previewtext-base-font-size"))
-                baseFontName = prefs.string(forKey: "com-bps-previewtext-base-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-                
+                    : CGFloat(prefs.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_SIZE))
+                baseFontName = prefs.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+
                 // Set line spacing
-                self.lineSpacing = CGFloat(prefs.float(forKey: "com-bps-previewtext-line-spacing")) 
+                self.lineSpacing = CGFloat(prefs.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING))
+
+                // FROM 1.0.5
+                // Set minimum icon size
+                self.minTumbnailSize = CGFloat(prefs.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE))
             }
             
             // Just in case the above block reads in zero values

@@ -362,12 +362,12 @@ final class AppDelegate: NSObject,
         // The suite name is the app group name, set in each the entitlements file of
         // the host app and of each extension
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            self.bodyFontSize = CGFloat(defaults.float(forKey: "com-bps-previewtext-base-font-size"))
-            self.doShowLightBackground = defaults.bool(forKey: "com-bps-previewtext-do-use-light")
-            self.bodyFontName = defaults.string(forKey: "com-bps-previewtext-base-font-name") ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
-            self.inkColourHex = defaults.string(forKey: "com-bps-previewtext-ink-colour-hex") ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
-            self.paperColourHex = defaults.string(forKey: "com-bps-previewtext-paper-colour-hex") ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
-            self.lineSpacing = CGFloat(defaults.float(forKey: "com-bps-previewtext-line-spacing"))
+            self.bodyFontSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_SIZE))
+            self.doShowLightBackground = defaults.bool(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
+            self.bodyFontName = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_NAME) ?? BUFFOON_CONSTANTS.BODY_FONT_NAME
+            self.inkColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR) ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
+            self.paperColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR) ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
+            self.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING))
         }
 
         // Get the menu item index from the stored value
@@ -511,7 +511,7 @@ final class AppDelegate: NSObject,
             let state: Bool = self.useLightCheckbox.state == .on
             if self.doShowLightBackground != state {
                 defaults.setValue(state,
-                                  forKey: "com-bps-previewtext-do-use-light")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
             
             if self.isLightMode || (!self.isLightMode && state) {
@@ -522,7 +522,7 @@ final class AppDelegate: NSObject,
                 if newColour != self.inkColourHex {
                     self.inkColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-ink-colour-hex")
+                                      forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR)
                 }
                 
                 // Check for and record a paper colour change
@@ -530,7 +530,7 @@ final class AppDelegate: NSObject,
                 if newColour != self.paperColourHex {
                     self.paperColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-paper-colour-hex")
+                                      forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR)
                 }
             } else {
                 // In Dark Mode, and the user wants a dark preview
@@ -538,14 +538,14 @@ final class AppDelegate: NSObject,
                 if newColour != self.paperColourHex {
                     self.paperColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-paper-colour-hex")
+                                      forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR)
                 }
                 
                 newColour = self.paperColourWell.color.hexString
                 if newColour != self.inkColourHex {
                     self.inkColourHex = newColour
                     defaults.setValue(newColour,
-                                      forKey: "com-bps-previewtext-ink-colour-hex")
+                                      forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR)
                 }
             }
             
@@ -554,7 +554,7 @@ final class AppDelegate: NSObject,
                 if fontName != self.bodyFontName {
                     self.bodyFontName = fontName
                     defaults.setValue(fontName,
-                                      forKey: "com-bps-previewtext-base-font-name")
+                                      forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_NAME)
                 }
             }
             
@@ -562,7 +562,7 @@ final class AppDelegate: NSObject,
             let newValue: CGFloat = BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
             if newValue != self.bodyFontSize {
                 defaults.setValue(newValue,
-                                  forKey: "com-bps-previewtext-base-font-size")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_SIZE)
             }
             
             // Save the selected line spacing
@@ -581,7 +581,7 @@ final class AppDelegate: NSObject,
             
             if (self.lineSpacing != lineSpacing) {
                 self.lineSpacing = lineSpacing
-                defaults.setValue(lineSpacing, forKey: "com-bps-previewtext-line-spacing")
+                defaults.setValue(lineSpacing, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING)
             }
             
             // Sync any changes
@@ -759,7 +759,7 @@ final class AppDelegate: NSObject,
             // if we need to show the sheet by the checking the prefs
             if let defaults = UserDefaults(suiteName: self.appSuiteName) {
                 // Get the version-specific preference key
-                let key: String = "com-bps-previewtext-do-show-whats-new-" + getVersion()
+                let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
                 doShowSheet = defaults.bool(forKey: key)
             }
         }
@@ -806,7 +806,7 @@ final class AppDelegate: NSObject,
 
         // Set this version's preference
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
-            let key: String = "com-bps-previewtext-do-show-whats-new-" + getVersion()
+            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             defaults.setValue(false, forKey: key)
 
             #if DEBUG
@@ -834,42 +834,42 @@ final class AppDelegate: NSObject,
             
             // Preview body font size, stored as a CGFloat
             // Default: 16.0
-            let bodyFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewtext-base-font-size")
+            let bodyFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_SIZE)
             if bodyFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE),
-                                  forKey: "com-bps-previewtext-base-font-size")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_FONT_SIZE)
             }
 
             // Thumbnail view base font size, stored as a CGFloat, not currently used
             // Default: 28.0
-            let thumbFontSizeDefault: Any? = defaults.object(forKey: "com-bps-previewtext-thumb-font-size")
+            let thumbFontSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             if thumbFontSizeDefault == nil {
                 defaults.setValue(CGFloat(BUFFOON_CONSTANTS.BASE_THUMB_FONT_SIZE),
-                                  forKey: "com-bps-previewtext-thumb-font-size")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_FONT_SIZE)
             }
             
             // Colour of JSON keys in the preview, stored as in integer array index
             // Default: #CA0D0E
-            var colourDefault: Any? = defaults.object(forKey: "com-bps-previewtext-ink-colour-hex")
+            var colourDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR)
             if colourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.INK_COLOUR_HEX,
-                                  forKey: "com-bps-previewtext-ink-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR)
             }
             
             // Colour of JSON markers in the preview, stored as in integer array index
             // Default: #0096FF
-            colourDefault = defaults.object(forKey: "com-bps-previewtext-paper-colour-hex")
+            colourDefault = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR)
             if colourDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.PAPER_COLOUR_HEX,
-                                  forKey: "com-bps-previewtext-paper-colour-hex")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR)
             }
             
             // Use light background even in dark mode, stored as a bool
             // Default: false
-            let useLightDefault: Any? = defaults.object(forKey: "com-bps-previewtext-do-use-light")
+            let useLightDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             if useLightDefault == nil {
                 defaults.setValue(false,
-                                  forKey: "com-bps-previewtext-do-use-light")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
 
             // Show the What's New sheet
@@ -878,19 +878,27 @@ final class AppDelegate: NSObject,
             // this will persist, but with each new major and/or minor version, we make a
             // new preference that will be read by 'doShowWhatsNew()' to see if the sheet
             // should be shown this run
-            let key: String = "com-bps-previewtext-do-show-whats-new-" + getVersion()
+            let key: String = BUFFOON_CONSTANTS.PREFS_IDS.MAIN_WHATS_NEW + getVersion()
             let showNewDefault: Any? = defaults.object(forKey: key)
             if showNewDefault == nil {
                 defaults.setValue(true, forKey: key)
             }
             
             // Store the preview line spacing value
-            let lineSpacingDefault: Any? = defaults.object(forKey: "com-bps-previewtext-line-spacing")
+            let lineSpacingDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING)
             if lineSpacingDefault == nil {
                 defaults.setValue(BUFFOON_CONSTANTS.BASE_LINE_SPACING,
-                                  forKey: "com-bps-previewtext-line-spacing")
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING)
             }
             
+            // FROM 1.0.5
+            // Store the miniumum thumbnail render size
+            let minThumbSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
+            if minThumbSizeDefault == nil {
+                defaults.setValue(BUFFOON_CONSTANTS.MIN_THUMB_SIZS,
+                                  forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
+            }
+
             // Sync any additions
             defaults.synchronize()
         }
