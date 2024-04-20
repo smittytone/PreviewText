@@ -31,7 +31,16 @@ class ThumbnailProvider: QLThumbnailProvider {
         /*
          * This is the main entry point for macOS' thumbnailing system
          */
-        
+
+        // FROM 1.0.5
+        // Don't bother rendering if the required icon size is
+        // too small to see. Set by the user, but 63 pixels or less by default
+        let common: Common = Common.init(true)
+        if common.minTumbnailSize > request.maximumSize.height {
+            handler(nil, ThumbnailerError.badFileUnsupportedFile("ICON SIZE BELOW MINIMUM"))
+            return
+        }
+
         // Load the source file using a co-ordinator as we don't know what thread this function
         // will be executed in when it's called by macOS' QuickLook code
         if FileManager.default.isReadableFile(atPath: request.fileURL.path) {
@@ -49,8 +58,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                     return
                 }
 
-                // Instantiate the common code within the closure
-                let common: Common = Common.init(true)
+                // Instantiate the common code
+                //let common: Common = Common.init(true)
 
                 // FROM 1.0.2
                 // Get the UTI to check Go config files
