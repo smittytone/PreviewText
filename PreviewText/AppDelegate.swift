@@ -18,7 +18,8 @@ final class AppDelegate: NSObject,
                          NSApplicationDelegate,
                          URLSessionDelegate,
                          URLSessionDataDelegate,
-                         WKNavigationDelegate {
+                         WKNavigationDelegate,
+                         NSControlTextEditingDelegate {
 
     // MARK:- Class UI Properies
     // Menu Items
@@ -62,6 +63,9 @@ final class AppDelegate: NSObject,
     @IBOutlet weak var noteLabel: NSTextField!
     @IBOutlet weak var previewView: NSTextView!
     @IBOutlet weak var previewScrollView: NSScrollView!
+    // FROM 1.0.5
+    @IBOutlet weak var minimumSizeTextField: NSTextField!
+    @IBOutlet weak var minimumSizeStepper: NSStepper!
 
     // What's New Sheet
     @IBOutlet weak var whatsNewWindow: NSWindow!
@@ -82,6 +86,8 @@ final class AppDelegate: NSObject,
     private  var isLightMode: Bool              = true
     private  var havePrefsChanged: Bool         = false
     internal var bodyFonts: [PMFont] = []
+    // FROM 1.0.5
+    private var tempMinimumThumbSize: CGFloat   = BUFFOON_CONSTANTS.MIN_THUMB_SIZE
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -368,6 +374,8 @@ final class AppDelegate: NSObject,
             self.inkColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_INK_COLOUR) ?? BUFFOON_CONSTANTS.INK_COLOUR_HEX
             self.paperColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR) ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
             self.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING))
+            // FROM 1.0.5
+            self.tempMinimumThumbSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE))
         }
 
         // Get the menu item index from the stored value
@@ -423,7 +431,12 @@ final class AppDelegate: NSObject,
         
         // Draw a preview preview
         doRenderPreview()
-        
+
+        // FROM 1.0.5
+        self.minimumSizeTextField.stringValue = "\(Int(self.tempMinimumThumbSize))"
+        self.minimumSizeTextField.resignFirstResponder()
+        self.minimumSizeStepper.floatValue = Float(self.tempMinimumThumbSize)
+
         // Display the sheet
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
     }
@@ -583,7 +596,10 @@ final class AppDelegate: NSObject,
                 self.lineSpacing = lineSpacing
                 defaults.setValue(lineSpacing, forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING)
             }
-            
+
+            // FROM 1.0.5
+            defaults.setValue(self.tempMinimumThumbSize, forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
+
             // Sync any changes
             defaults.synchronize()
         }
@@ -733,7 +749,15 @@ final class AppDelegate: NSObject,
         // FROM 1.0.1 -- Render preview on changes
         self.doRenderPreview()
     }
-    
+
+
+    @IBAction private func stepperClicked(sender: Any) {
+
+        self.tempMinimumThumbSize = CGFloat(self.minimumSizeStepper.floatValue)
+        self.minimumSizeTextField.stringValue = "\(Int(self.tempMinimumThumbSize))"
+        self.minimumSizeTextField.resignFirstResponder()
+    }
+
     
     // MARK: - What's New Sheet Functions
 
@@ -895,7 +919,7 @@ final class AppDelegate: NSObject,
             // Store the miniumum thumbnail render size
             let minThumbSizeDefault: Any? = defaults.object(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
             if minThumbSizeDefault == nil {
-                defaults.setValue(BUFFOON_CONSTANTS.MIN_THUMB_SIZS,
+                defaults.setValue(BUFFOON_CONSTANTS.MIN_THUMB_SIZE,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
             }
 
@@ -936,6 +960,29 @@ final class AppDelegate: NSObject,
             // Set the warning note's state (greyed out when it's not relevant)
             self.noteLabel.alphaValue = self.useLightCheckbox.state == .on ? 0.25 : 1.0
         }
+    }
+
+    // MARK: - NSTextField Delegate Functions
+
+    func controlTextDidChange(_ obj: Notification) {
+
+        if let value: Int = Int(self.minimumSizeTextField.stringValue) {
+            self.tempMinimumThumbSize = CGFloat(value)
+            self.minimumSizeStepper.floatValue = Float(value)
+        } else {
+            self.minimumSizeTextField.stringValue = "\(Int(self.tempMinimumThumbSize))"
+        }
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+
+        if let value: Int = Int(self.minimumSizeTextField.stringValue) {
+            self.minimumSizeStepper.floatValue = Float(value)
+            self.tempMinimumThumbSize = CGFloat(self.minimumSizeStepper.floatValue)
+        }
+
+        self.minimumSizeTextField.stringValue = "\(Int(self.tempMinimumThumbSize))"
+        self.minimumSizeTextField.resignFirstResponder()
     }
 
 }
