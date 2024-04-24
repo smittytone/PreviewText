@@ -94,8 +94,9 @@ struct BUFFOON_CONSTANTS {
     }
 
     // FROM 1.0.5
-    static let MIN_THUMB_SIZE                   = 64.0
+    static let MIN_THUMB_SIZE                   = 48.0
     static let BASE_THUMB_LINE_SPACING          = 1.15
+    static let THUMB_SIZES: [CGFloat]           = [256.0, 128.0, 96.0, 64.0, 48.0, 32.0, 16.0]
 
     struct PREFS_IDS {
 

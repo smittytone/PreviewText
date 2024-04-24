@@ -24,7 +24,7 @@ final class Common: NSObject {
     var fontSize: CGFloat               = BUFFOON_CONSTANTS.BASE_PREVIEW_FONT_SIZE
     var lineSpacing: CGFloat            = BUFFOON_CONSTANTS.BASE_LINE_SPACING
     // FROM 1.0.5
-    var minTumbnailSize: CGFloat        = BUFFOON_CONSTANTS.MIN_THUMB_SIZE
+    var minimumTumbnailSize: CGFloat    = BUFFOON_CONSTANTS.MIN_THUMB_SIZE
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -100,7 +100,7 @@ final class Common: NSObject {
 
                 // FROM 1.0.5
                 // Set minimum icon size
-                self.minTumbnailSize = CGFloat(prefs.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE))
+                self.minimumTumbnailSize = CGFloat(prefs.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE))
             }
             
             // Just in case the above block reads in zero values
