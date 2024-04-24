@@ -40,7 +40,7 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 - 1.0.5 *Unreleased*
     - Support `.toml` files.
-    - Allow the user to set a minimum size below which thumbnails will not be rendered because they’ll be too small to be of value. Default: 64 pixels.
+    - Allow the user to set a minimum size below which thumbnails will not be rendered because they’ll be too small to be of value. Default: 48 pixels.
     - Revise Thumbnailer code with a view to reducing massive memory usage seen by some users, and as-yet-unexplained Thumbnailer crashes.
 - 1.0.4 *14 August 2023*
     - Non-shipping release: repo/code reorganisation.
