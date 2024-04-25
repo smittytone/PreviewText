@@ -36,7 +36,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         // Don't bother rendering if the required icon size is
         // too small to see. Set by the user, but 63 pixels or less by default
         let common: Common = Common.init(true)
-        if common.minimumTumbnailSize > CGFloat(request.maximumSize.height) {
+        if Double(common.minimumTumbnailSize) > request.maximumSize.height {
             handler(nil, ThumbnailerError.badFileUnsupportedFile("ICON SIZE BELOW MINIMUM"))
             return
         }

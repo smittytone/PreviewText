@@ -85,7 +85,7 @@ final class AppDelegate: NSObject,
     private  var havePrefsChanged: Bool         = false
     internal var bodyFonts: [PMFont] = []
     // FROM 1.0.5
-    private var minimumThumbSize: CGFloat       = BUFFOON_CONSTANTS.MIN_THUMB_SIZE
+    private var minimumThumbSize: Int           = BUFFOON_CONSTANTS.MIN_THUMB_SIZE
 
     /*
      Replace the following string with your own team ID. This is used to
@@ -373,7 +373,7 @@ final class AppDelegate: NSObject,
             self.paperColourHex = defaults.string(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_PAPER_COLOUR) ?? BUFFOON_CONSTANTS.PAPER_COLOUR_HEX
             self.lineSpacing = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_LINE_SPACING))
             // FROM 1.0.5
-            self.minimumThumbSize = CGFloat(defaults.float(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE))
+            self.minimumThumbSize = defaults.integer(forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
         }
 
         // Get the menu item index from the stored value
@@ -493,9 +493,10 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func doUpdateMinSize(sender: Any) {
 
-        self.havePrefsChanged = true
-
-        self.minimumThumbSize = BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem]
+        if self.minimumThumbSize != BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem] {
+            self.minimumThumbSize = BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem]
+            self.havePrefsChanged = true
+        }
     }
 
     
