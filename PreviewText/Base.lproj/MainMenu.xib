@@ -281,7 +281,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="qoe-JK-lOv"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="mini" lineBreakMode="clipping" alignment="center" title="PreviewText © 2023, Tony Smith. All rights reserved." id="g12-Ft-65u">
+                        <textFieldCell key="cell" controlSize="mini" lineBreakMode="clipping" alignment="center" title="PreviewText ©2024, Tony Smith. All rights reserved." id="g12-Ft-65u">
                             <font key="font" metaFont="miniSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
