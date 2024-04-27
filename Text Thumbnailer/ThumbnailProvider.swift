@@ -3,7 +3,7 @@
  *  PreviewText
  *
  *  Created by Tony Smith on 01/09/2023.
- *  Copyright © 2023 Tony Smith. All rights reserved.
+ *  Copyright © 2024 Tony Smith. All rights reserved.
  */
 
 
@@ -15,7 +15,7 @@ import QuickLookThumbnailing
 class ThumbnailProvider: QLThumbnailProvider {
 
     // MARK:- Private Properties
-    
+
     private enum ThumbnailerError: Error {
         case badFileLoad(String)
         case badFileUnreadable(String)
@@ -25,6 +25,8 @@ class ThumbnailProvider: QLThumbnailProvider {
         case badGfxDraw
     }
 
+
+    // MARK:- QLThumbnailProvider Required Functions
 
     override func provideThumbnail(for request: QLFileThumbnailRequest, _ handler: @escaping (QLThumbnailReply?, Error?) -> Void) {
 
@@ -53,6 +55,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // Get the string's encoding, or fail back to .utf8
                 let encoding: String.Encoding = data.stringEncoding ?? .utf8
 
+                // Check the string's encoding generates a valid string
+                // NOTE This may not be necessary and so may be removed
                 guard let textFileString: String = String.init(data: data, encoding: encoding) else {
                     handler(nil, ThumbnailerError.badFileLoad(request.fileURL.path))
                     return
@@ -76,14 +80,14 @@ class ThumbnailProvider: QLThumbnailProvider {
                     // Split the line into words and count them (approx.)
                     let words: [Substring] = lines[i].split(separator: " ")
                     let approxParagraphLineCount: Int = words.count / 12
-                    
+
                     // Estimate the number of lines the paragraph requires
                     if approxParagraphLineCount > 1 {
                         displayLineCount += (approxParagraphLineCount + 1)
                     } else {
                         displayLineCount += 1
                     }
-                    
+
                     // Add the paragraph to the string we'll present
                     displayString += (String(lines[i]) + "\n")
 
@@ -92,9 +96,6 @@ class ThumbnailProvider: QLThumbnailProvider {
                     }
                 }
 
-                // Get the Attributed String from the base string
-                let textAtts: NSAttributedString = common.getAttributedString(displayString)
-
                 // Set the primary drawing frame and a base font size
                 let textFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
                                                    CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y),
@@ -102,8 +103,8 @@ class ThumbnailProvider: QLThumbnailProvider {
                                                    CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.HEIGHT))
 
                 // Instantiate an NSTextField to display the NSAttributedString render of the text
-                let textTextField = NSTextField.init(frame: textFrame)
-                textTextField.attributedStringValue = textAtts
+                let textTextField: NSTextField = NSTextField.init(frame: textFrame)
+                textTextField.attributedStringValue = common.getAttributedString(displayString)
 
                 // Generate the bitmap from the rendered code text view
                 guard let bodyImageRep: NSBitmapImageRep = textTextField.bitmapImageRepForCachingDisplay(in: textFrame) else {
@@ -111,24 +112,23 @@ class ThumbnailProvider: QLThumbnailProvider {
                     return
                 }
 
-                // Draw the code view into the bitmap
+                // Draw the text view into the bitmap
                 textTextField.cacheDisplay(in: textFrame, to: bodyImageRep)
-                
+
                 if let image: CGImage = bodyImageRep.cgImage {
                     // Just in case, make a copy of the cgImage, in case
                     // `bodyImageReg` is freed
                     if let cgImage: CGImage = image.copy() {
                         // Calculate image scaling, frame size, etc.
-                        let iconScale: CGFloat = request.scale
                         let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                                 0.0,
                                                                 CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
                                                                 request.maximumSize.height)
                         let scaleFrame: CGRect = NSMakeRect(0.0,
                                                             0.0,
-                                                            thumbnailFrame.width * iconScale,
-                                                            thumbnailFrame.height * iconScale)
-                        
+                                                            thumbnailFrame.width * request.scale,
+                                                            thumbnailFrame.height * request.scale)
+
                         // Pass a QLThumbnailReply and no error to the supplied handler
                         handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
                             // `scaleFrame` and `cgImage` are immutable
