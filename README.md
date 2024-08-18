@@ -39,7 +39,7 @@ Contributions will only be accepted if they code they contain is licensed under 
 ## Release Notes ##
 
 - 1.0.6 *Unreleased*
-    - Support `.conf` files.
+    - Support `.conf` and `.config` files.
     - Revert NSTextViews to TextKit 1 (previously bumped to 2 by Xcode)
 - 1.0.5 *29 April 2024*
     - Support `.toml` files.

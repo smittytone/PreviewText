@@ -216,6 +216,7 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>conf</string>
+					<string>config</string>
 				</array>
 			</dict>
 		</dict>
