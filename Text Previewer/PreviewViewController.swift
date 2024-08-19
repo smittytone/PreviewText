@@ -74,7 +74,17 @@ class PreviewViewController: NSViewController,
                 
                 if let textString = String.init(data: data, encoding: encoding) {
                     // Get the key string first
-                    let textAttString: NSAttributedString = common.getAttributedString(textString)
+                    #if DEBUG
+                    var textAttString: NSAttributedString = common.getAttributedString("\( CFStringConvertEncodingToNSStringEncoding(CFStringConvertWindowsCodepageToEncoding(437)))" + "\n" + textString)
+                    #else
+                    var textAttString: NSAttributedString = common.getAttributedString(textString)
+                    #endif
+                    
+                    if encoding.rawValue == CFStringConvertEncodingToNSStringEncoding(CFStringConvertWindowsCodepageToEncoding(437)) {
+                        if let winFont: NSFont = NSFont.init(name: "More Perfect DOS VFA", size: 18.0) {
+                            textAttString = NSAttributedString(string: getEncoding(encoding) + "\n" + textString, attributes: [.font: winFont])
+                        }
+                    }
                     
                     // Knock back the light background to make the scroll bars visible in dark mode
                     // NOTE If !doShowLightBackground,
@@ -181,6 +191,80 @@ class PreviewViewController: NSViewController,
         return NSError(domain: BUFFOON_CONSTANTS.APP_CODE_PREVIEWER,
                        code: code,
                        userInfo: [NSLocalizedDescriptionKey: errDesc])
+    }
+    
+    
+    func getEncoding(_ enc: String.Encoding) -> String {
+        
+        if enc == .windowsCP1250 {
+            return "Windows 1250"
+        }
+        
+        if enc == .windowsCP1251 {
+            return "Windows 1251"
+        }
+        
+        if enc == .windowsCP1252 {
+            return "Windows 1250"
+        }
+        
+        if enc == .windowsCP1253 {
+            return "Windows 1250"
+        }
+        
+        if enc == .windowsCP1254 {
+            return "Windows 1250"
+        }
+        
+        if enc == .utf8 {
+            return "UTF-8"
+        }
+        
+        if enc == .utf16 {
+            return "UTF-16"
+        }
+        
+        if enc == .utf16LittleEndian {
+            return "UTF-16 LE"
+        }
+        
+        if enc == .utf16BigEndian {
+            return "UTF-16 BE"
+        }
+        
+        if enc == .macOSRoman {
+            return "macOS Roman"
+        }
+        
+        if enc == .ascii {
+            return "Ascii"
+        }
+        
+        if enc == .isoLatin1 {
+            return "ISO Latin 1"
+        }
+        
+        if enc == .isoLatin2 {
+            return "ISO Latin 2"
+        }
+        
+        if enc == .iso2022JP {
+            return "ISO JP 2022"
+        }
+        
+        if enc == .japaneseEUC {
+            return "Japanese EUC"
+        }
+        
+        if enc == .symbol {
+            return "Symbol"
+        }
+        
+        if enc == .shiftJIS {
+            return "Shift JIS"
+        }
+        
+        return "\(enc.rawValue)"
     }
     
 }

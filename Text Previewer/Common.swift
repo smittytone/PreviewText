@@ -233,7 +233,7 @@ extension Data {
     var stringEncoding: String.Encoding? {
         var nss: NSString? = nil
         guard case let rawValue = NSString.stringEncoding(for: self,
-                                                          encodingOptions: nil,
+                                                          encodingOptions: [.fromWindowsKey: true],
                                                           convertedString: &nss,
                                                           usedLossyConversion: nil), rawValue != 0 else { return nil }
         return .init(rawValue: rawValue)
