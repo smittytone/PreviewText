@@ -74,7 +74,12 @@ class PreviewViewController: NSViewController,
                 
                 if let textString = String.init(data: data, encoding: encoding) {
                     // Get the key string first
+                    // FROM 1.0.6: display the encoding in the DEBUG version
+#if DEBUG
+                    let textAttString: NSAttributedString = common.getAttributedString("\(encoding) [\(encoding.rawValue)]\n" + textString)
+#else
                     let textAttString: NSAttributedString = common.getAttributedString(textString)
+#endif
                     
                     // Knock back the light background to make the scroll bars visible in dark mode
                     // NOTE If !doShowLightBackground,
