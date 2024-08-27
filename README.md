@@ -2,7 +2,7 @@
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
-*PreviewText* provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.toml`, `.conf`, `.nfo`, `.1st`, `.srt` and `.sub`.
+*PreviewText* provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.toml`, `.conf`, `.config`, `.nfo`, `.1st`, `.srt` and `.sub`.
 
 *PreviewText* is [available free of charge from the Mac App Store](https://apps.apple.com/us/app/previewtext/id1660037028).
 
