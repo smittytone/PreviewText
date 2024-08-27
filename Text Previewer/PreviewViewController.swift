@@ -20,6 +20,7 @@ class PreviewViewController: NSViewController,
     @IBOutlet var renderTextView: NSTextView!
     @IBOutlet var renderTextScrollView: NSScrollView!
     @IBOutlet var previewErrorLabel: NSTextField!
+    @IBOutlet var encodingOptions: NSPopUpButton!
     
     
     override var nibName: NSNib.Name? {
@@ -75,7 +76,7 @@ class PreviewViewController: NSViewController,
                 if let textString = String.init(data: data, encoding: encoding) {
                     // Get the key string first
                     #if DEBUG
-                    var textAttString: NSAttributedString = common.getAttributedString("\( CFStringConvertEncodingToNSStringEncoding(CFStringConvertWindowsCodepageToEncoding(437)))" + "\n" + textString)
+                    var textAttString: NSAttributedString = common.getAttributedString("\(encoding)" + "\n" + textString)
                     #else
                     var textAttString: NSAttributedString = common.getAttributedString(textString)
                     #endif
@@ -265,6 +266,15 @@ class PreviewViewController: NSViewController,
         }
         
         return "\(enc.rawValue)"
+    }
+    
+    @IBAction private func selectEncoding(sender: Any) {
+        
+        let index = self.encodingOptions.indexOfSelectedItem
+        switch(index) {
+        default:
+            self.loadView()
+        }
     }
     
 }

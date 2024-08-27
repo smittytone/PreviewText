@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreviewViewController" customModule="Text_Previewer" customModuleProvider="target">
             <connections>
+                <outlet property="encodingOptions" destination="pnG-pK-qK1" id="sfD-GR-3sJ"/>
                 <outlet property="previewErrorLabel" destination="gfz-0M-XrH" id="4YR-Y3-FWu"/>
                 <outlet property="renderTextScrollView" destination="W9l-6S-rRP" id="hNd-aj-qCO"/>
                 <outlet property="renderTextView" destination="Qsk-rg-dDO" id="gs3-Pg-zW2"/>
@@ -21,17 +22,17 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9l-6S-rRP">
-                    <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
-                    <clipView key="contentView" drawsBackground="NO" id="HhZ-OT-Pez">
-                        <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
+                    <rect key="frame" x="0.0" y="40" width="594" height="318"/>
+                    <clipView key="contentView" clipsToBounds="NO" drawsBackground="NO" id="HhZ-OT-Pez">
+                        <rect key="frame" x="0.0" y="0.0" width="579" height="318"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" layoutManager="textKit1" id="Qsk-rg-dDO">
-                                <rect key="frame" x="0.0" y="0.0" width="594" height="358"/>
+                            <textView editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" layoutManager="textKit1" id="Qsk-rg-dDO">
+                                <rect key="frame" x="0.0" y="0.0" width="579" height="318"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="594" height="358"/>
+                                <size key="minSize" width="579" height="318"/>
                                 <size key="maxSize" width="594" height="10000000"/>
                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             </textView>
@@ -42,14 +43,14 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="awU-eF-a2l">
-                        <rect key="frame" x="578" y="0.0" width="16" height="358"/>
+                        <rect key="frame" x="579" y="0.0" width="15" height="318"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
-                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfz-0M-XrH">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfz-0M-XrH">
                     <rect key="frame" x="-2" y="171" width="598" height="16"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="16" id="t8i-EC-Ink"/>
+                        <constraint firstAttribute="height" constant="16" id="j9v-73-Gjy"/>
                     </constraints>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" alignment="center" title="Error!" id="HA4-tS-Nmo">
                         <font key="font" usesAppearanceFont="YES"/>
@@ -57,15 +58,39 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pnG-pK-qK1">
+                    <rect key="frame" x="441" y="-4" width="157" height="25"/>
+                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="8qL-In-RgX" id="IxW-vz-8fy">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="fNP-6r-a2v">
+                            <items>
+                                <menuItem title="Item 1" state="on" id="8qL-In-RgX"/>
+                                <menuItem title="Item 2" id="DGg-SK-JFX"/>
+                                <menuItem title="Item 3" id="KDa-Bm-WTv"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="FgG-UC-Puh"/>
+                        <constraint firstAttribute="height" constant="20" id="ioi-ob-Pec"/>
+                    </constraints>
+                    <connections>
+                        <action selector="selectEncodingWithSender:" target="-2" id="gLB-ah-iLT"/>
+                    </connections>
+                </popUpButton>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="W9l-6S-rRP" secondAttribute="trailing" id="0nf-OG-uFE"/>
-                <constraint firstItem="gfz-0M-XrH" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="5Fg-CD-sP5"/>
-                <constraint firstAttribute="trailing" secondItem="gfz-0M-XrH" secondAttribute="trailing" id="6Lt-LE-wc9"/>
-                <constraint firstItem="gfz-0M-XrH" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="8dN-f2-22B"/>
-                <constraint firstItem="W9l-6S-rRP" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="U0m-Te-sdQ"/>
-                <constraint firstItem="W9l-6S-rRP" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="dZf-mD-9PM"/>
-                <constraint firstAttribute="bottom" secondItem="W9l-6S-rRP" secondAttribute="bottom" id="do2-Cb-EAZ"/>
+                <constraint firstItem="gfz-0M-XrH" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="1Ue-xT-Rba"/>
+                <constraint firstAttribute="trailing" secondItem="gfz-0M-XrH" secondAttribute="trailing" id="AMs-W1-qXg"/>
+                <constraint firstAttribute="bottom" secondItem="pnG-pK-qK1" secondAttribute="bottom" id="AxS-Ju-9Ql"/>
+                <constraint firstItem="W9l-6S-rRP" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="CMJ-9o-uE7"/>
+                <constraint firstItem="W9l-6S-rRP" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="IIL-dC-XNi"/>
+                <constraint firstItem="gfz-0M-XrH" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="OwP-P1-tVd"/>
+                <constraint firstAttribute="trailing" secondItem="W9l-6S-rRP" secondAttribute="trailing" id="PYB-2D-Hx0"/>
+                <constraint firstAttribute="trailing" secondItem="pnG-pK-qK1" secondAttribute="trailing" id="UtV-QQ-9Sa"/>
+                <constraint firstItem="pnG-pK-qK1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" constant="20" symbolic="YES" id="bSF-rF-5Dj"/>
+                <constraint firstItem="pnG-pK-qK1" firstAttribute="top" secondItem="W9l-6S-rRP" secondAttribute="bottom" constant="20" symbolic="YES" id="cZz-Ro-vYU"/>
             </constraints>
             <point key="canvasLocation" x="196" y="197"/>
         </customView>
