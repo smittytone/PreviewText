@@ -72,13 +72,13 @@ class ThumbnailProvider: QLThumbnailProvider {
                     }
                 }
 
-                // Only render the lines likely to appear in the thumbnail: split into 32 substrings, assuming one per line
-                let lines: [Substring] = textFileString.split(separator: "\n", maxSplits: BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT + 1, omittingEmptySubsequences: false)
+                // Only render the lines likely to appear in the thumbnail: split into THUMBNAIL_LINE_COUNT substrings, assuming one per line
+                let paragraphs: [Substring] = textFileString.split(separator: "\n", maxSplits: BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT, omittingEmptySubsequences: false)
                 var displayString: String = ""
                 var displayLineCount: Int = 0
-                for i in 0..<lines.count {
+                for i in 0..<paragraphs.count {
                     // Split the line into words and count them (approx.)
-                    let words: [Substring] = lines[i].split(separator: " ")
+                    let words: [Substring] = paragraphs[i].split(separator: " ")
                     let approxParagraphLineCount: Int = words.count / 12
 
                     // Estimate the number of lines the paragraph requires
@@ -89,7 +89,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                     }
 
                     // Add the paragraph to the string we'll present
-                    displayString += (String(lines[i]) + "\n")
+                    displayString += (String(paragraphs[i]) + "\n")
 
                     if displayLineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
                         break
