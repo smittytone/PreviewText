@@ -40,7 +40,9 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 - 1.0.6 *Unreleased*
     - Support `.conf` and `.config` files.
-    - Revert NSTextViews to TextKit 1 (previously bumped to 2 by Xcode)
+    - Revert NSTextViews to TextKit 1 (previously bumped to 2 by Xcode).
+    - Correct **Preferences** panel preview behaviour in Dark Mode.
+    - Improve preference change handling.
 - 1.0.5 *29 April 2024*
     - Support `.toml` files.
     - Allow the user to set a minimum size below which thumbnails will not be rendered because they’ll be too small to be of value. Default: 48 pixels.
