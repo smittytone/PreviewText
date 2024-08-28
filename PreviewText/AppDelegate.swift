@@ -82,7 +82,7 @@ final class AppDelegate: NSObject,
     private  var doShowLightBackground: Bool    = false
     internal var isMontereyPlus: Bool           = false
     private  var isLightMode: Bool              = true
-    private  var havePrefsChanged: Bool         = false
+    //private  var havePrefsChanged: Bool         = false
     internal var bodyFonts: [PMFont] = []
     // FROM 1.0.5
     private var minimumThumbSize: Int           = BUFFOON_CONSTANTS.MIN_THUMB_SIZE
@@ -161,7 +161,7 @@ final class AppDelegate: NSObject,
         
         // Check for open panels
         if self.preferencesWindow.isVisible {
-            if self.havePrefsChanged {
+            if checkPrefs() {
                 let alert: NSAlert = showAlert("You have unsaved settings",
                                                "Do you wish to cancel and save them, or quit the app anyway?",
                                                false)
@@ -352,7 +352,7 @@ final class AppDelegate: NSObject,
         hidePanelGenerators()
         
         // Reset the changes flag
-        self.havePrefsChanged = false
+        //self.havePrefsChanged = false
         
         // Prep the preview view
         self.previewView.isSelectable = false
@@ -401,7 +401,7 @@ final class AppDelegate: NSObject,
         }
         
         // Set the colour shift warning's state
-        self.noteLabel.alphaValue = self.doShowLightBackground ? 0.25 : 1.0
+        self.noteLabel.alphaValue = self.isLightMode ? 0.25 : 1.0
         
         // Set the font name popup
         // List the current system's monospace fonts
@@ -438,87 +438,7 @@ final class AppDelegate: NSObject,
         self.window.beginSheet(self.preferencesWindow, completionHandler: nil)
     }
 
-
-    /**
-        When the font size slider is moved and released, this function updates the font size readout.
-
-        - Parameters:
-            - sender: The source of the action.
-     */
-    @IBAction private func doMoveSlider(sender: Any) {
-        
-        let index: Int = Int(self.fontSizeSlider.floatValue)
-        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
-        self.havePrefsChanged = true
-        
-        doRenderPreview()
-    }
-
-
-    /**
-     Called when the user selects a font from the list.
-
-     - Parameters:
-        - sender: The source of the action.
-     */
-    @IBAction private func doUpdateFonts(sender: Any) {
-        
-        self.havePrefsChanged = true
-        
-        setStylePopup()
-        doRenderPreview()
-    }
-
     
-    /**
-     Called when the user selects a style from the list.
-
-     - Parameters:
-        - sender: The source of the action.
-     */
-    @IBAction private func doUpdateStyle(sender: Any) {
-        
-        self.havePrefsChanged = true
-        
-        doRenderPreview()
-    }
-
-
-    /**
-     Called when the user selects a thumbnail size from the list.
-     FROM 1.0.5
-
-     - Parameters:
-        - sender: The source of the action.
-     */
-    @IBAction private func doUpdateMinSize(sender: Any) {
-
-        if self.minimumThumbSize != BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem] {
-            self.minimumThumbSize = BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem]
-            self.havePrefsChanged = true
-        }
-    }
-
-    
-    /**
-        Close the **Preferences** sheet without saving.
-
-        - Parameters:
-            - sender: The source of the action.
-     */
-    @IBAction private func doClosePreferences(sender: Any) {
-
-        // Close the colour selection panel(s) if they're open
-        doCloseColourWells()
-        
-        // Shut the window
-        self.window.endSheet(self.preferencesWindow)
-        
-        // Restore menus
-        showPanelGenerators()
-    }
-
-
     /**
         Close the **Preferences** sheet and save any settings that have changed.
 
@@ -527,9 +447,6 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func doSavePreferences(sender: Any) {
 
-        // Close the colour selection panel(s) if they're open
-        doCloseColourWells()
-        
         // Save any changed preferences
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             
@@ -611,13 +528,55 @@ final class AppDelegate: NSObject,
             }
 
             // FROM 1.0.5
-            defaults.setValue(self.minimumThumbSize, forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
-
+            let minSize: Int = BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem]
+            if minSize != self.minimumThumbSize {
+                defaults.setValue(self.minimumThumbSize, forKey: BUFFOON_CONSTANTS.PREFS_IDS.THUMB_MIN_SIZE)
+            }
+            
             // Sync any changes
             defaults.synchronize()
         }
         
-        // Remove the sheet now we have the data
+        // Close the sheet and tidy up
+        closePrefsWindow()
+    }
+    
+    
+    /**
+        Close the **Preferences** sheet without saving.
+
+        - Parameters:
+            - sender: The source of the action.
+     */
+    @IBAction private func doClosePreferences(sender: Any) {
+        
+        if checkPrefs() {
+            let alert: NSAlert = showAlert("You have made changes",
+                                           "Do you wish to go back and save them, or ignore them? ",
+                                           false)
+            alert.addButton(withTitle: "Go Back")
+            alert.addButton(withTitle: "Ignore Changes")
+            alert.beginSheetModal(for: self.preferencesWindow) { (response: NSApplication.ModalResponse) in
+                if response != NSApplication.ModalResponse.alertFirstButtonReturn {
+                    // The user clicked 'Cancel'
+                    self.closePrefsWindow()
+                }
+            }
+        } else {
+            closePrefsWindow()
+        }
+    }
+    
+    
+    /**
+        Tidy up and close the **Preferences** sheet.
+     */
+    private func closePrefsWindow() {
+        
+        // Close the colour selection panel(s) if they're open
+        closeColourWells()
+        
+        // Shut the window
         self.window.endSheet(self.preferencesWindow)
         
         // Restore menus
@@ -626,9 +585,9 @@ final class AppDelegate: NSObject,
     
 
     /**
-        Close all the colour wells that are open.
+        Close any open colour wells.
      */
-    private func doCloseColourWells() {
+    private func closeColourWells() {
         
         if self.inkColourWell.isActive {
             NSColorPanel.shared.close()
@@ -641,7 +600,153 @@ final class AppDelegate: NSObject,
         }
     }
     
+    
+    /**
+        Check the preference values when the sheet is cancelled in case any
+        have been changed by the user.
+     
+        - Returns: `true` if the settings have been changed.
+     */
+    private func checkPrefs() -> Bool {
+        
+        var haveChanged: Bool = false
+        
+        // Check for a use light background change
+        let state: Bool = self.useLightCheckbox.state == .on
+        haveChanged = (self.doShowLightBackground != state)
+        
+        // Check for and record an indent change
+        if !haveChanged {
+            let lineIndex: Int = self.lineSpacingPopup.indexOfSelectedItem
+            var lineSpacing: CGFloat = 1.0
+            switch(lineIndex) {
+                case 1:
+                    lineSpacing = 1.15
+                case 2:
+                    lineSpacing = 1.5
+                case 3:
+                    lineSpacing = 2.0
+                default:
+                    lineSpacing = 1.0
+            }
+        
+            haveChanged = (round(self.lineSpacing * 100) / 100.0 != lineSpacing)
+        }
+        
+        // Check for and record a font and style change
+        if let fontName: String = getPostScriptName() {
+            if !haveChanged {
+                haveChanged = (fontName != self.bodyFontName)
+            }
+        }
+        
+        // Check for and record a font size change
+        if !haveChanged {
+            haveChanged = (self.bodyFontSize != BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)])
+        }
+        
+        // Check for thumbnail minimum size change
+        if !haveChanged {
+            haveChanged = (self.minimumThumbSize != BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem])
+        }
+        
+        // Check for ink/paper colour changes
+        if !haveChanged && (self.isLightMode || (!self.isLightMode && state)) {
+            // In Light Mode, or in Dark Mode and the user wants a light preview
+            var newColour: String = self.inkColourWell.color.hexString
+            if newColour != self.inkColourHex {
+                haveChanged = true
+            }
+            
+            newColour = self.paperColourWell.color.hexString
+            if newColour != self.paperColourHex {
+                haveChanged = true
+            }
+        } else {
+            // In Dark Mode, and the user wants a dark preview
+            var newColour: String = self.inkColourWell.color.hexString
+            if newColour != self.paperColourHex {
+                haveChanged = true
+            }
+            
+            newColour = self.paperColourWell.color.hexString
+            if newColour != self.inkColourHex {
+                haveChanged = true
+            }
+        }
+        
+        return haveChanged
+    }
+    
 
+    /**
+        When the font size slider is moved and released, this function updates the font size readout.
+
+        - Parameters:
+            - sender: The source of the action.
+     */
+    @IBAction private func doMoveSlider(sender: Any) {
+        
+        let index: Int = Int(self.fontSizeSlider.floatValue)
+        self.fontSizeLabel.stringValue = "\(Int(BUFFOON_CONSTANTS.FONT_SIZE_OPTIONS[index]))pt"
+        //self.havePrefsChanged = true
+        
+        // Update the preview
+        doRenderPreview()
+    }
+
+
+    /**
+     Called when the user selects a font from the list.
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doUpdateFonts(sender: Any) {
+        
+        //self.havePrefsChanged = true
+        
+        // Update the font's styles list
+        setStylePopup()
+        
+        // Update the preview
+        doRenderPreview()
+    }
+
+    
+    /**
+     Called when the user selects a style from the list.
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doUpdateStyle(sender: Any) {
+        
+        //self.havePrefsChanged = true
+        
+        // Update the preview
+        doRenderPreview()
+    }
+
+
+    /**
+     Called when the user selects a thumbnail size from the list.
+     FROM 1.0.5
+
+     - Parameters:
+        - sender: The source of the action.
+     */
+    @IBAction private func doUpdateMinSize(sender: Any) {
+        
+        /*
+        if self.minimumThumbSize != BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem] {
+            self.minimumThumbSize = BUFFOON_CONSTANTS.THUMB_SIZES[self.minimumSizePopup.indexOfSelectedItem]
+            self.havePrefsChanged = true
+        }
+        */
+    }
+
+    
     /**
         Respond to a click on the **use light background** checkbox.
 
@@ -673,8 +778,9 @@ final class AppDelegate: NSObject,
      */
     @IBAction @objc func doChangeColours(_ sender: Any) {
         
-        self.havePrefsChanged = true
+        //self.havePrefsChanged = true
         
+        // Update the preview
         doRenderPreview()
     }
     
@@ -692,6 +798,14 @@ final class AppDelegate: NSObject,
         common.paperColour = self.paperColourWell.color.hexString
         common.inkColour = self.inkColourWell.color.hexString
         common.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
+        
+        // FROM 1.0.6
+        // If we're in Dark Mode and the 'show light preview' checkbox is set,
+        // correctly reflect this in the preview
+        if self.useLightCheckbox.isEnabled && self.useLightCheckbox.state == .on {
+            common.paperColour = self.inkColourWell.color.hexString
+            common.inkColour = self.paperColourWell.color.hexString
+        }
         
         var lineSpacing: CGFloat = 1.0
         switch(self.lineSpacingPopup.indexOfSelectedItem) {
@@ -757,7 +871,7 @@ final class AppDelegate: NSObject,
      */
     @IBAction private func checkboxClicked(sender: Any) {
         
-        self.havePrefsChanged = true
+        //self.havePrefsChanged = true
         
         // FROM 1.0.1 -- Render preview on changes
         self.doRenderPreview()
@@ -940,7 +1054,14 @@ final class AppDelegate: NSObject,
      */
     @objc private func interfaceModeChanged() {
         
-        self.isLightMode = !isMacInLightMode()
+        // FROM 1.0.6
+        // macOS 14 appears to switch values from earlier versions.
+        // See note 2 below
+        if #available(macOS 14, *) {
+            self.isLightMode = isMacInLightMode()
+        } else {
+            self.isLightMode = !isMacInLightMode()
+        }
         
         if self.preferencesWindow.isVisible {
             // Prefs window is up, so switch the use light background checkbox
@@ -963,7 +1084,7 @@ final class AppDelegate: NSObject,
             }
             
             // Set the warning note's state (greyed out when it's not relevant)
-            self.noteLabel.alphaValue = self.useLightCheckbox.state == .on ? 0.25 : 1.0
+            self.noteLabel.alphaValue = self.isLightMode ? 0.25 : 1.0
         }
     }
 
