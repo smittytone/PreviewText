@@ -362,6 +362,11 @@ final class AppDelegate: NSObject,
         
         // Check for the OS mode
         self.isLightMode = isMacInLightMode()
+
+#if DEBUG
+            self.foregroundLabel.stringValue = self.isLightMode ? "LIGHT" : "DARK"
+            self.backgroundLabel.stringValue = self.useLightCheckbox.state == .on ? "ON" : "OFF"
+#endif
         
         // The suite name is the app group name, set in each the entitlements file of
         // the host app and of each extension
@@ -451,13 +456,13 @@ final class AppDelegate: NSObject,
         if let defaults = UserDefaults(suiteName: self.appSuiteName) {
             
             // Check for and record a use light background change
-            let state: Bool = self.useLightCheckbox.state == .on
-            if self.doShowLightBackground != state {
-                defaults.setValue(state,
+            let useLightColours: Bool = self.useLightCheckbox.state == .on
+            if self.doShowLightBackground != useLightColours {
+                defaults.setValue(useLightColours,
                                   forKey: BUFFOON_CONSTANTS.PREFS_IDS.PREVIEW_USE_LIGHT)
             }
             
-            if self.isLightMode || (!self.isLightMode && state) {
+            if self.isLightMode || useLightColours {
                 // In Light Mode, or in Dark Mode and the user wants a light preview
                 
                 // Check for and record an ink colour change
@@ -651,6 +656,7 @@ final class AppDelegate: NSObject,
         }
         
         // Check for ink/paper colour changes
+        // NOTE `state` is `true` if the user wants a light preview in dark mode
         if !haveChanged && (self.isLightMode || (!self.isLightMode && state)) {
             // In Light Mode, or in Dark Mode and the user wants a light preview
             var newColour: String = self.inkColourWell.color.hexString
@@ -799,14 +805,6 @@ final class AppDelegate: NSObject,
         common.inkColour = self.inkColourWell.color.hexString
         common.fontSize = BUFFOON_CONSTANTS.PREVIEW_SIZE_OPTIONS[Int(self.fontSizeSlider.floatValue)]
         
-        // FROM 1.0.6
-        // If we're in Dark Mode and the 'show light preview' checkbox is set,
-        // correctly reflect this in the preview
-        if self.useLightCheckbox.isEnabled && self.useLightCheckbox.state == .on {
-            common.paperColour = self.inkColourWell.color.hexString
-            common.inkColour = self.paperColourWell.color.hexString
-        }
-        
         var lineSpacing: CGFloat = 1.0
         switch(self.lineSpacingPopup.indexOfSelectedItem) {
             case 1:
@@ -818,6 +816,7 @@ final class AppDelegate: NSObject,
             default:
                 lineSpacing = 1.0
         }
+    
         
         common.lineSpacing = lineSpacing
         common.setProperties(false, getPostScriptName() ?? BUFFOON_CONSTANTS.BODY_FONT_NAME)
@@ -873,8 +872,17 @@ final class AppDelegate: NSObject,
         
         //self.havePrefsChanged = true
         
+        let tempColour: NSColor = self.inkColourWell.color
+        self.inkColourWell.color = self.paperColourWell.color
+        self.paperColourWell.color = tempColour
+        
         // FROM 1.0.1 -- Render preview on changes
         self.doRenderPreview()
+        
+#if DEBUG
+            self.foregroundLabel.stringValue = self.isLightMode ? "LIGHT" : "DARK"
+            self.backgroundLabel.stringValue = self.useLightCheckbox.state == .on ? "ON" : "OFF"
+#endif
     }
 
 
@@ -1064,6 +1072,11 @@ final class AppDelegate: NSObject,
         }
         
         if self.preferencesWindow.isVisible {
+#if DEBUG
+            self.foregroundLabel.stringValue = self.isLightMode ? "LIGHT" : "DARK"
+            self.backgroundLabel.stringValue = self.useLightCheckbox.state == .on ? "ON" : "OFF"
+#endif
+            
             // Prefs window is up, so switch the use light background checkbox
             // on or off according to whether the current mode is light
             // NOTE 1 For light mode, this checkbox is irrelevant, so the
@@ -1078,10 +1091,10 @@ final class AppDelegate: NSObject,
                 let tempColour: NSColor = self.inkColourWell.color
                 self.inkColourWell.color = self.paperColourWell.color
                 self.paperColourWell.color = tempColour
-                
-                // Update the preview
-                doRenderPreview()
             }
+            
+            // Update the preview
+            doRenderPreview()
             
             // Set the warning note's state (greyed out when it's not relevant)
             self.noteLabel.alphaValue = self.isLightMode ? 0.25 : 1.0
