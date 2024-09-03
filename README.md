@@ -38,7 +38,7 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Release Notes ##
 
-- 1.0.6 *Unreleased*
+- 1.0.6 *3 September 2024*
     - Support `.conf` and `.config` files.
     - Revert NSTextViews to TextKit 1 (previously bumped to 2 by Xcode).
     - Correct **Preferences** panel preview behaviour in Dark Mode.
