@@ -13,13 +13,15 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.content</string>
-				<string>public.data</string>
+				<string>public.text</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Subtitle file</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Subtitle</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.srt</string>
 			<key>UTTypeTagSpecification</key>
@@ -37,13 +39,15 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.content</string>
-				<string>public.data</string>
+				<string>public.text</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Subtitle file</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Subtitle</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.sub</string>
 			<key>UTTypeTagSpecification</key>
@@ -67,7 +71,10 @@
 			<key>UTTypeDescription</key>
 			<string>Info</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Info</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.nfo</string>
 			<key>UTTypeTagSpecification</key>
@@ -93,7 +100,10 @@
 			<key>UTTypeDescription</key>
 			<string>First</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Info</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.1st</string>
 			<key>UTTypeTagSpecification</key>
@@ -113,7 +123,10 @@
 			<key>UTTypeDescription</key>
 			<string>ReStructuredText</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>RSText</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.rst</string>
 			<key>UTTypeTagSpecification</key>
@@ -137,7 +150,10 @@
 			<key>UTTypeDescription</key>
 			<string>Me</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Me</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.me</string>
 			<key>UTTypeTagSpecification</key>
@@ -154,6 +170,13 @@
 				<string>public.content</string>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>Go Config</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Go Conf</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.goconfig</string>
 			<key>UTTypeTagSpecification</key>
@@ -172,6 +195,13 @@
 				<string>public.content</string>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>I/O</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconText</key>
+				<string>Input/Output</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.io</string>
 			<key>UTTypeTagSpecification</key>
@@ -189,6 +219,8 @@
 				<string>public.content</string>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>Toml</string>
 			<key>UTTypeIcons</key>
 			<dict/>
 			<key>UTTypeIdentifier</key>
@@ -206,20 +238,23 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.content</string>
-				<string>public.data</string>
+				<string>public.text</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>Config</string>
+			<key>UTTypeIcons</key>
+			<dict/>
 			<key>UTTypeIdentifier</key>
 			<string>com.bps.config</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>conf</string>
 					<string>config</string>
 				</array>
 			</dict>
 		</dict>
+		<dict/>
 	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>
