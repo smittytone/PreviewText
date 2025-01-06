@@ -21,6 +21,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         case badFileUnreadable(String)
         case badFileUnsupportedEncoding(String)
         case badFileUnsupportedFile(String)
+        case badRequestedIconSize(String)
         case badGfxBitmap
         case badGfxDraw
     }
@@ -39,7 +40,7 @@ class ThumbnailProvider: QLThumbnailProvider {
         // too small to see. Set by the user, but 63 pixels or less by default
         let common: Common = Common.init(true)
         if Double(common.minimumTumbnailSize) > request.maximumSize.height {
-            handler(nil, ThumbnailerError.badFileUnsupportedFile("ICON SIZE BELOW MINIMUM"))
+            handler(nil, ThumbnailerError.badRequestedIconSize("ICON SIZE BELOW MINIMUM"))
             return
         }
 
