@@ -17,9 +17,9 @@ class PreviewViewController: NSViewController,
     
     // MARK:- Class UI Properties
 
-    @IBOutlet var renderTextView: NSTextView!
-    @IBOutlet var renderTextScrollView: NSScrollView!
-    @IBOutlet var previewErrorLabel: NSTextField!
+    @IBOutlet weak var renderTextView: NSTextView!
+    @IBOutlet weak var renderTextScrollView: NSScrollView!
+    @IBOutlet weak var previewErrorLabel: NSTextField!
     
     
     override var nibName: NSNib.Name? {
