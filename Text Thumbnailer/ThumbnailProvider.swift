@@ -72,10 +72,11 @@ class ThumbnailProvider: QLThumbnailProvider {
                     }
                 }
 
-                // Only render the lines likely to appear in the thumbnail: split into THUMBNAIL_LINE_COUNT substrings, assuming one per line
+                // Only render the lines likely to appear in the thumbnail: split into THUMBNAIL_LINE_COUNT substrings, assuming one per line.
+                // This may be excessive if paragraphs span multiple lines, but we have to work to the minumum line-per-para count
                 let paragraphs: [Substring] = textFileString.split(separator: "\n", maxSplits: BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT, omittingEmptySubsequences: false)
-                var displayString: String = ""
                 var displayLineCount: Int = 0
+                var lastParagraph: Int = 0
                 for i in 0..<paragraphs.count {
                     // Split the line into words and count them (approx.)
                     let words: [Substring] = paragraphs[i].split(separator: " ")
@@ -88,14 +89,12 @@ class ThumbnailProvider: QLThumbnailProvider {
                         displayLineCount += 1
                     }
 
-                    // Add the paragraph to the string we'll present
-                    displayString += (String(paragraphs[i]) + "\n")
-
                     if displayLineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
+                        lastParagraph = i
                         break
                     }
                 }
-
+                
                 // Set the primary drawing frame and a base font size
                 let textFrame: CGRect = NSMakeRect(CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_X),
                                                    CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ORIGIN_Y),
@@ -104,6 +103,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                 // Instantiate an NSTextField to display the NSAttributedString render of the text
                 let textTextField: NSTextField = NSTextField.init(frame: textFrame)
+                let displayString = String(textFileString[textFileString.startIndex..<paragraphs[lastParagraph].endIndex])
                 textTextField.attributedStringValue = common.getAttributedString(displayString)
 
                 // Generate the bitmap from the rendered code text view
