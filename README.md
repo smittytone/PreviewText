@@ -1,4 +1,4 @@
-# PreviewText 1.0.7
+# PreviewText 1.0.8
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
@@ -38,8 +38,11 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Release Notes ##
 
-- 1.0.7 *Unreleased*
+- 1.0.8 *Unreleased*
+    - 
+- 1.0.7 *1 December 2024*
     - Remove support for `.conf` files — conflict with [PreviewCode](https://smittytone.net/previewcode/index.html) for these files.
+    - Correct build target to macOS 10.15 Catalina.
 - 1.0.6 *3 September 2024*
     - Support `.conf` and `.config` files.
     - Revert NSTextViews to TextKit 1 (previously bumped to 2 by Xcode).
