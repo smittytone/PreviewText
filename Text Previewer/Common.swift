@@ -4,7 +4,7 @@
  *  Code common to Text Previewer and Text Thumbnailer
  *
  *  Created by Tony Smith on 05/10/2023.
- *  Copyright © 2024 Tony Smith. All rights reserved.
+ *  Copyright © 2025 Tony Smith. All rights reserved.
  */
 
 
