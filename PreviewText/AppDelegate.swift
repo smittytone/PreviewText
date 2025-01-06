@@ -364,8 +364,8 @@ final class AppDelegate: NSObject,
         self.isLightMode = isMacInLightMode()
 
 #if DEBUG
-            self.foregroundLabel.stringValue = self.isLightMode ? "LIGHT" : "DARK"
-            self.backgroundLabel.stringValue = self.useLightCheckbox.state == .on ? "ON" : "OFF"
+        self.foregroundLabel.stringValue = self.isLightMode ? "LIGHT" : "DARK"
+        self.backgroundLabel.stringValue = self.useLightCheckbox.state == .on ? "ON" : "OFF"
 #endif
         
         // The suite name is the app group name, set in each the entitlements file of
