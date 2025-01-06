@@ -40,11 +40,12 @@ final class Common: NSObject {
     private var alwaysLightMode: Bool   = false
     
     // String artifacts...
-    private var textAtts: [NSAttributedString.Key: Any] = [:]
-    private var hr: NSAttributedString                  = NSAttributedString.init(string: "")
-    private var newLine: NSAttributedString             = NSAttributedString.init(string: "")
+    private var textAtts: [NSAttributedString.Key: Any]     = [:]
+    private var hr: NSAttributedString                      = NSAttributedString.init(string: "")
+    private var newLine: NSAttributedString                 = NSAttributedString.init(string: "")
+    // FROM 1.0.8
+    private var debugAtts: [NSAttributedString.Key: Any]    = [:]
 
-    var mainView: NSView? = nil
 
     // MARK:- Lifecycle Functions
 
@@ -130,6 +131,12 @@ final class Common: NSObject {
             .paragraphStyle: textParaStyle
         ]
         
+        self.debugAtts = [
+            .foregroundColor: NSColor.systemRed,
+            .font: font,
+            .paragraphStyle: textParaStyle
+        ]
+        
         self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
                                                   .strikethroughColor: NSColor.hexToColour(self.inkColour)]
@@ -153,8 +160,16 @@ final class Common: NSObject {
     func getAttributedString(_ textString: String) -> NSAttributedString {
         
         // Set up the base string
+#if DEBUG
         let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: textString,
                                                                                        attributes: self.textAtts)
+        var encodingRange: NSRange = (textString as NSString).range(of: "\n")
+        encodingRange = NSMakeRange(0, encodingRange.location)
+        renderedString.setAttributes(self.debugAtts, range: encodingRange)
+#else
+        let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: textString,
+                                                                                       attributes: self.textAtts)
+#endif
         return renderedString as NSAttributedString
     }
     
