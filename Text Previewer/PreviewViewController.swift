@@ -76,7 +76,7 @@ class PreviewViewController: NSViewController,
                     // Get the key string first
                     // FROM 1.0.6: display the encoding in the DEBUG version
 #if DEBUG
-                    let textAttString: NSAttributedString = common.getAttributedString("\(encoding) [\(encoding.rawValue)]\n" + textString)
+                    let textAttString: NSAttributedString = common.getAttributedString("\(encoding) [\(encoding.rawValue)] PTDEBUG\n" + textString)
 #else
                     let textAttString: NSAttributedString = common.getAttributedString(textString)
 #endif

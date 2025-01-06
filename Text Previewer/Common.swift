@@ -163,9 +163,11 @@ final class Common: NSObject {
 #if DEBUG
         let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: textString,
                                                                                        attributes: self.textAtts)
-        var encodingRange: NSRange = (textString as NSString).range(of: "\n")
-        encodingRange = NSMakeRange(0, encodingRange.location)
-        renderedString.setAttributes(self.debugAtts, range: encodingRange)
+        var encodingRange: NSRange = (textString as NSString).range(of: "PTDEBUG\n")
+        if encodingRange.location != NSNotFound {
+            encodingRange = NSMakeRange(0, encodingRange.location + 7)
+            renderedString.setAttributes(self.debugAtts, range: encodingRange)
+        }
 #else
         let renderedString: NSMutableAttributedString = NSMutableAttributedString.init(string: textString,
                                                                                        attributes: self.textAtts)
