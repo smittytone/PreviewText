@@ -23,6 +23,7 @@
 				<string>com.bps.io</string>
 				<string>com.bps.toml</string>
 				<string>com.bps.config</string>
+				<string>cz.wz.zuggy.subrip</string>
 			</array>
 			<key>QLThumbnailMinimumDimension</key>
 			<integer>0</integer>

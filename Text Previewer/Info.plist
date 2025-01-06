@@ -25,6 +25,7 @@
 				<string>com.bps.io</string>
 				<string>com.bps.toml</string>
 				<string>com.bps.config</string>
+				<string>cz.wz.zuggy.subrip</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<true/>
