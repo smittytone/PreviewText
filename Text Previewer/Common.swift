@@ -123,7 +123,7 @@ final class Common: NSObject {
         // Set up the attributed string components we may use during rendering
         let textParaStyle: NSMutableParagraphStyle = NSMutableParagraphStyle.init()
         textParaStyle.lineSpacing = (self.lineSpacing - 1) * self.fontSize
-        //textParaStyle.paragraphSpacing = self.lineSpacing * self.fontSize * 0.5
+        textParaStyle.paragraphSpacing = 0.0
         
         self.textAtts = [
             .foregroundColor: NSColor.hexToColour(self.inkColour),
@@ -137,11 +137,14 @@ final class Common: NSObject {
             .paragraphStyle: textParaStyle
         ]
         
+        // Horizontal line
+        // NOTE This formulation requires TextKit 1
         self.hr = NSAttributedString(string: "\n\u{00A0}\u{0009}\u{00A0}\n\n",
                                      attributes: [.strikethroughStyle: NSUnderlineStyle.thick.rawValue,
                                                   .strikethroughColor: NSColor.hexToColour(self.inkColour)]
         )
         
+        // New line symbol
         self.newLine = NSAttributedString.init(string: "\n",
                                                attributes: textAtts)
     }
@@ -248,10 +251,10 @@ Get the encoding of the string formed from data.
 extension Data {
     
     var stringEncoding: String.Encoding? {
-        var nss: NSString? = nil
+        
         guard case let rawValue = NSString.stringEncoding(for: self,
                                                           encodingOptions: nil,
-                                                          convertedString: &nss,
+                                                          convertedString: nil,
                                                           usedLossyConversion: nil), rawValue != 0 else { return nil }
         return .init(rawValue: rawValue)
     }
