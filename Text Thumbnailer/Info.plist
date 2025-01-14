@@ -24,6 +24,7 @@
 				<string>com.bps.toml</string>
 				<string>com.bps.config</string>
 				<string>cz.wz.zuggy.subrip</string>
+				<string>com.bps.pubkey</string>
 			</array>
 			<key>QLThumbnailMinimumDimension</key>
 			<integer>0</integer>
