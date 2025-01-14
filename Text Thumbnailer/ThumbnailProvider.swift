@@ -77,7 +77,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                 // This may be excessive if paragraphs span multiple lines, but we have to work to the minumum line-per-para count
                 let paragraphs: [Substring] = textFileString.split(separator: "\n", maxSplits: BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT, omittingEmptySubsequences: false)
                 var displayLineCount: Int = 0
-                var lastParagraph: Int = 0
+                var cutoff: Substring.Index = textFileString.endIndex
                 for i in 0..<paragraphs.count {
                     // Split the line into words and count them (approx.)
                     let words: [Substring] = paragraphs[i].split(separator: " ")
@@ -91,7 +91,7 @@ class ThumbnailProvider: QLThumbnailProvider {
                     }
 
                     if displayLineCount >= BUFFOON_CONSTANTS.THUMBNAIL_LINE_COUNT {
-                        lastParagraph = i
+                        cutoff = paragraphs[i].endIndex
                         break
                     }
                 }
@@ -104,7 +104,7 @@ class ThumbnailProvider: QLThumbnailProvider {
 
                 // Instantiate an NSTextField to display the NSAttributedString render of the text
                 let textTextField: NSTextField = NSTextField.init(frame: textFrame)
-                let displayString = String(textFileString[textFileString.startIndex..<paragraphs[lastParagraph].endIndex])
+                let displayString = String(textFileString[textFileString.startIndex..<cutoff])
                 textTextField.attributedStringValue = common.getAttributedString(displayString)
 
                 // Generate the bitmap from the rendered code text view
@@ -117,27 +117,24 @@ class ThumbnailProvider: QLThumbnailProvider {
                 textTextField.cacheDisplay(in: textFrame, to: bodyImageRep)
 
                 if let image: CGImage = bodyImageRep.cgImage {
-                    // Just in case, make a copy of the cgImage, in case
-                    // `bodyImageReg` is freed
-                    if let cgImage: CGImage = image.copy() {
-                        // Calculate image scaling, frame size, etc.
-                        let thumbnailFrame: CGRect = NSMakeRect(0.0,
-                                                                0.0,
-                                                                CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
-                                                                request.maximumSize.height)
-                        let scaleFrame: CGRect = NSMakeRect(0.0,
+                    // Calculate image scaling, frame size, etc.
+                    let thumbnailFrame: CGRect = NSMakeRect(0.0,
                                                             0.0,
-                                                            thumbnailFrame.width * request.scale,
-                                                            thumbnailFrame.height * request.scale)
+                                                            CGFloat(BUFFOON_CONSTANTS.THUMBNAIL_SIZE.ASPECT) * request.maximumSize.height,
+                                                            request.maximumSize.height)
+                    let scaleFrame: CGRect = NSMakeRect(0.0,
+                                                        0.0,
+                                                        thumbnailFrame.width * request.scale,
+                                                        thumbnailFrame.height * request.scale)
 
-                        // Pass a QLThumbnailReply and no error to the supplied handler
-                        handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
-                            // `scaleFrame` and `cgImage` are immutable
-                            context.draw(cgImage, in: scaleFrame, byTiling: false)
-                            return true
-                        }, nil)
-                        return
-                    }
+                    // Pass a QLThumbnailReply and no error to the supplied handler
+                    handler(QLThumbnailReply.init(contextSize: thumbnailFrame.size) { (context) -> Bool in
+                        // `scaleFrame` and `cgImage` are immutable
+                        context.draw(image, in: scaleFrame, byTiling: false)
+                        return true
+                    }, nil)
+                    
+                    return
                 }
 
                 handler(nil, ThumbnailerError.badGfxDraw)
