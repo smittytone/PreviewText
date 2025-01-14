@@ -71,4 +71,4 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2024, Tony Smith.
+Primary app code and UI design &copy; 2025, Tony Smith.

@@ -281,7 +281,7 @@ DQ
                         <constraints>
                             <constraint firstAttribute="height" constant="22" id="qoe-JK-lOv"/>
                         </constraints>
-                        <textFieldCell key="cell" controlSize="mini" lineBreakMode="clipping" alignment="center" title="PreviewText ©2024, Tony Smith. All rights reserved." id="g12-Ft-65u">
+                        <textFieldCell key="cell" controlSize="mini" lineBreakMode="clipping" alignment="center" title="PreviewText © 2025, Tony Smith. All rights reserved." id="g12-Ft-65u">
                             <font key="font" metaFont="miniSystem"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -599,7 +599,7 @@ DQ
                         <autoresizingMask key="autoresizingMask"/>
                         <clipView key="contentView" drawsBackground="NO" id="6TF-3o-APJ">
                             <rect key="frame" x="0.0" y="0.0" width="238" height="107"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <textView wantsLayer="YES" editable="NO" selectable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" selectionGranularity="word" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="3Hh-Lw-LDd">
                                     <rect key="frame" x="0.0" y="0.0" width="234" height="99"/>
