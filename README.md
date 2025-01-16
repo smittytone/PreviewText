@@ -38,7 +38,7 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Release Notes ##
 
-- 1.0.8 *Unreleased*
+- 1.0.8 *16 January 2025*
     - Support <code>.[pub</code> public key files.
     - Improved thumbnail rendering.
 - 1.0.7 *1 December 2024*
