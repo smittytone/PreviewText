@@ -38,6 +38,8 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Release Notes ##
 
+- 1.0.9 *Unreleased*
+    - Preparation work ahead of deprecation.
 - 1.0.8 *16 January 2025*
     - Support <code>.pub</code> public key files.
     - Improved thumbnail rendering.
@@ -71,4 +73,4 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Copyright and Credits ##
 
-Primary app code and UI design &copy; 2025, Tony Smith.
+Primary app code and UI design © 2025, Tony Smith.
