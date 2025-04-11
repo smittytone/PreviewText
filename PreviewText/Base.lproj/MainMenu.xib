@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23727" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23727"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23727"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -31,8 +31,6 @@
                 <outlet property="helpMenuOthersPreviewCode" destination="wRu-mF-ECh" id="FUk-g8-FN8"/>
                 <outlet property="helpMenuOthersPreviewMarkdown" destination="a5a-JN-xae" id="efo-wb-Yel"/>
                 <outlet property="helpMenuOtherspreviewJson" destination="cvH-uO-rsZ" id="7NX-L9-FGf"/>
-                <outlet property="helpMenuOtherspreviewYaml" destination="QaP-Sh-GBM" id="dG4-9f-SZ8"/>
-                <outlet property="helpMenuReportBug" destination="9jb-nj-WtE" id="EKk-7L-9bP"/>
                 <outlet property="helpMenuWhatsNew" destination="8ow-rc-CzH" id="QnA-b5-xV5"/>
                 <outlet property="inkColourWell" destination="c2F-Ul-2wK" id="rbb-u2-ouO"/>
                 <outlet property="lineSpacingPopup" destination="vBZ-vN-pu1" id="IEu-mM-22W"/>
@@ -170,22 +168,10 @@
                                                 <action selector="doShowSitesWithSender:" target="Voe-Tx-rLC" id="Ebh-6w-BEE"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="PreviewYaml" id="QaP-Sh-GBM">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="doShowSitesWithSender:" target="-1" id="Jn1-JI-R21"/>
-                                            </connections>
-                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="YBw-sx-eD7"/>
-                            <menuItem title="Report a Bug..." id="9jb-nj-WtE">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="doShowReportWindowWithSender:" target="Voe-Tx-rLC" id="Iu8-dF-Oro"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Rate this App..." id="jLd-Pw-5jM">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -287,20 +273,6 @@ DQ
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wsQ-ot-4qZ">
-                        <rect key="frame" x="197" y="95" width="216" height="32"/>
-                        <buttonCell key="cell" type="push" title="Send Feedback" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="zAO-EE-eq3">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="202" id="ANa-T8-k2Z"/>
-                            <constraint firstAttribute="height" constant="20" id="Ycc-M4-EgV"/>
-                        </constraints>
-                        <connections>
-                            <action selector="doShowReportWindowWithSender:" target="-1" id="Z7m-Sr-kYT"/>
-                        </connections>
-                    </button>
                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oFK-cW-IUJ">
                         <rect key="frame" x="18" y="192" width="577" height="32"/>
                         <constraints>
@@ -321,7 +293,7 @@ DQ
                         </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="app_logo" id="nld-FG-AfM"/>
                     </imageView>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="H25-9I-Shn">
+                    <button verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H25-9I-Shn">
                         <rect key="frame" x="197" y="127" width="216" height="32"/>
                         <buttonCell key="cell" type="push" title="Show Preview Preferences" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KuI-DA-1Cp">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -337,7 +309,6 @@ DQ
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="9WJ-du-sIm" firstAttribute="top" secondItem="wsQ-ot-4qZ" secondAttribute="bottom" constant="20" symbolic="YES" id="0dQ-Yi-Mkc"/>
                     <constraint firstItem="Pfk-9U-7X4" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="14v-aV-Bvr"/>
                     <constraint firstItem="wao-aS-JHP" firstAttribute="top" secondItem="9WJ-du-sIm" secondAttribute="bottom" constant="20" symbolic="YES" id="8cq-da-4Yf"/>
                     <constraint firstItem="gnK-6R-XxR" firstAttribute="top" secondItem="yKK-Oa-7KG" secondAttribute="bottom" constant="8" symbolic="YES" id="93L-gx-E6D"/>
@@ -351,8 +322,6 @@ DQ
                     <constraint firstItem="yKK-Oa-7KG" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="PjX-hI-0Fc"/>
                     <constraint firstItem="9WJ-du-sIm" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="Pm0-6G-Iji"/>
                     <constraint firstItem="oFK-cW-IUJ" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" symbolic="YES" id="Rda-e7-ehJ"/>
-                    <constraint firstItem="wsQ-ot-4qZ" firstAttribute="top" secondItem="H25-9I-Shn" secondAttribute="bottom" constant="12" symbolic="YES" id="X8x-To-CTq"/>
-                    <constraint firstItem="wsQ-ot-4qZ" firstAttribute="centerX" secondItem="EiT-Mj-1SZ" secondAttribute="centerX" id="aSe-gy-T3f"/>
                     <constraint firstAttribute="trailing" secondItem="PVG-26-lfC" secondAttribute="trailing" constant="17" id="al2-2d-uhR"/>
                     <constraint firstItem="uyh-RX-zrN" firstAttribute="top" secondItem="Pfk-9U-7X4" secondAttribute="bottom" constant="8" symbolic="YES" id="bGi-ak-jmt"/>
                     <constraint firstItem="Pfk-9U-7X4" firstAttribute="top" secondItem="PVG-26-lfC" secondAttribute="bottom" constant="8" symbolic="YES" id="bnV-wk-ZVn"/>

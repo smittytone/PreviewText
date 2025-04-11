@@ -25,11 +25,11 @@ final class AppDelegate: NSObject,
     @IBOutlet var helpMenu: NSMenuItem!
     @IBOutlet var helpMenuOnlineHelp: NSMenuItem!
     @IBOutlet var helpMenuAppStoreRating: NSMenuItem!
-    @IBOutlet var helpMenuReportBug: NSMenuItem!
+    //@IBOutlet var helpMenuReportBug: NSMenuItem!
     @IBOutlet var helpMenuWhatsNew: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewMarkdown: NSMenuItem!
     @IBOutlet var helpMenuOthersPreviewCode: NSMenuItem!
-    @IBOutlet var helpMenuOtherspreviewYaml: NSMenuItem!
+    //@IBOutlet var helpMenuOtherspreviewYaml: NSMenuItem!
     @IBOutlet var helpMenuOtherspreviewJson: NSMenuItem!
     
     @IBOutlet var mainMenuSettings: NSMenuItem!
@@ -232,8 +232,8 @@ final class AppDelegate: NSObject,
             path = BUFFOON_CONSTANTS.APP_URLS.PM
         } else if item == self.helpMenuOthersPreviewCode {
             path = BUFFOON_CONSTANTS.APP_URLS.PC
-        } else if item == self.helpMenuOtherspreviewYaml {
-            path = BUFFOON_CONSTANTS.APP_URLS.PY
+        //} else if item == self.helpMenuOtherspreviewYaml {
+        //    path = BUFFOON_CONSTANTS.APP_URLS.PY
         } else if item == self.helpMenuOtherspreviewJson {
             path = BUFFOON_CONSTANTS.APP_URLS.PJ
         }
@@ -257,7 +257,7 @@ final class AppDelegate: NSObject,
 
 
     // MARK: - Report Functions
-
+    /*
     /**
      Display a window in which the user can submit feedback, or report a bug.
 
@@ -336,7 +336,7 @@ final class AppDelegate: NSObject,
         // NOTE sheet closes asynchronously unless there was no feedback to send,
         //      or an error occured with setting up the feedback session
     }
-    
+    */
 
     // MARK: - Preferences Functions
 
