@@ -1,4 +1,4 @@
-# PreviewText 1.0.8
+# PreviewText 1.0.9
 
 QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
 
@@ -38,7 +38,7 @@ Contributions will only be accepted if they code they contain is licensed under 
 
 ## Release Notes ##
 
-- 1.0.9 *Unreleased*
+- 1.0.9 *April 2025*
     - Preparation work ahead of deprecation.
 - 1.0.8 *16 January 2025*
     - Support <code>.pub</code> public key files.
