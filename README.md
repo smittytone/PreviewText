@@ -1,14 +1,8 @@
 # PreviewText 1.0.9
 
-*PreviewText* has now bee End-of-Lifed. No further updates will be made.
+QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond. *PreviewText* provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.toml`, `.nfo`, `.1st`, `.srt` and `.sub`.
 
-QuickLook preview and icon thumbnailing app extensions for macOS Catalina and beyond.
-
-*PreviewText* provides previews and thumbnails for textual files that have no file extension, or use non-standard extensions, including `.toml`, `.nfo`, `.1st`, `.srt` and `.sub`.
-
-*PreviewText* is [available free of charge from the Mac App Store](https://apps.apple.com/us/app/previewtext/id1660037028).
-
-![PreviewText App Store QR code](qr-code.png)
+*PreviewText* has now been End-of-Lifed. No further updates will be made.
 
 ## Installation and Usage ##
 
